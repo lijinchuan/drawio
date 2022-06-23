@@ -1,4 +1,4 @@
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5" ><![endif]-->
+﻿<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5" ><![endif]-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -246,9 +246,12 @@
 		{
 			// Used to request grapheditor/mxgraph sources in dev mode
 			var mxDevUrl = document.location.protocol + '//devhost.jgraph.com/drawio/src/main';
+            mxDevUrl = './';
 			
 			// Used to request draw.io sources in dev mode
 			var drawDevUrl = document.location.protocol + '//devhost.jgraph.com/drawio/src/main/webapp/';
+            drawDevUrl = './';
+
 			var geBasePath = drawDevUrl + '/js/grapheditor';
 			var mxBasePath = mxDevUrl + '/mxgraph';
 			
@@ -428,6 +431,7 @@
 </head>
 <body class="geEditor">
 <div id="geInfo">
+	<!--
 	<div class="geBlock">
 		<h1>Flowchart Maker and Online Diagram Software</h1>
 		<p>
@@ -438,7 +442,7 @@
 		<p>
 			Please ensure JavaScript is enabled.
 		</p>
-	</div>
+	</div>-->
 </div>
 <script type="text/javascript">
 /**
