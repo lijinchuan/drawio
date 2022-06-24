@@ -246,6 +246,11 @@ App.MODE_EMBED = 'embed';
 App.MODE_ATLAS = 'atlas';
 
 /**
+ * server App Mode
+ */
+App.MODE_SERVER = 'server';
+
+/**
  * Sets the delay for autosave in milliseconds. Default is 2000.
  */
 App.DROPBOX_APPKEY = window.DRAWIO_DROPBOX_ID;

@@ -12,3 +12,4 @@ window.DRAW_MATH_URL = 'math/es5';
 window.DRAWIO_CONFIG = null; // Replace with your custom draw.io configurations. For more details, https://www.diagrams.net/doc/faq/configure-diagram-editor
 urlParams['sync'] = 'manual';
 urlParams['lang'] = 'zh';
+urlParams['offline'] = '1'

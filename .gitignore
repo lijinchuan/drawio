@@ -1,5 +1,8 @@
-bin
+bin/
+obj/
 build
 classes
 node_modules
 .vscode/settings.json
+/src/netcoreapp3.1
+obj
