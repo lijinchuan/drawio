@@ -435,9 +435,9 @@ App.getStoredMode = function()
 			{
 				urlParams['mode'] = 'dropbox';
 			}
-			
-			App.mode = urlParams['mode'];
 		}
+
+		App.mode = urlParams['mode'];
 			
 		if (App.mode == null)
 		{
@@ -1675,8 +1675,8 @@ App.prototype.init = function()
 			{
 				var file = this.getCurrentFile();
 				var mode = (file != null) ? file.getMode() : null;
-				
-				if (urlParams['extAuth'] != '1' && (mode == App.MODE_DEVICE || mode == App.MODE_BROWSER))
+
+				if (urlParams['extAuth'] != '1' && (mode == App.MODE_DEVICE || mode == App.MODE_BROWSER || mode == App.MODE_SERVER))
 				{
 					this.showDownloadDesktopBanner();
 				}
@@ -2571,7 +2571,8 @@ App.prototype.createBackground = function()
 		// and should not be modified if mode is undefined
 		if (this.mode != null)
 		{
-			Editor.useLocalStorage = this.mode == App.MODE_BROWSER;
+			Editor.useLocalStorage = this.mode == App.MODE_BROWSER
+				|| this.mode == App.MODE_SERVER;
 		}
 
 		if (this.appIcon != null)
@@ -3990,7 +3991,7 @@ App.prototype.pickFile = function(mode)
 				});
 				
 				var prevValue = Editor.useLocalStorage;
-				Editor.useLocalStorage = (mode == App.MODE_BROWSER);
+				Editor.useLocalStorage = (mode == App.MODE_BROWSER || mode == App.MODE_SERVER);
 				this.openFile();
 				
 				// Installs local handler for opened files in same window
@@ -4007,8 +4008,10 @@ App.prototype.pickFile = function(mode)
 						}
 		
 						this.fileLoaded((mode == App.MODE_BROWSER) ?
-							new StorageFile(this, xml, filename) :
-							new LocalFile(this, xml, filename));
+							new StorageFile(this, xml, filename) : (
+								mode == App.MODE_SERVER ?
+									new ServerFile(this, xml, filename) :
+							new LocalFile(this, xml, filename)));
 					});
 					
 					var currentFile = this.getCurrentFile();
@@ -4175,7 +4178,7 @@ App.prototype.pickLibrary = function(mode)
 		});
 		
 		var prevValue = Editor.useLocalStorage;
-		Editor.useLocalStorage = mode == App.MODE_BROWSER;
+		Editor.useLocalStorage = mode == App.MODE_BROWSER || mode == App.MODE_SERVER;
 		
 		// Closes dialog after open
 		window.openFile = new OpenFile(mxUtils.bind(this, function(cancel)
@@ -4188,7 +4191,8 @@ App.prototype.pickLibrary = function(mode)
 			try
 			{
 				this.loadLibrary((mode == App.MODE_BROWSER) ? new StorageLibrary(this, xml, filename) :
-					new LocalLibrary(this, xml, filename));
+					(mode == App.MODE_SERVER ? new ServerLibrary(this, xml, filename) :
+						new LocalLibrary(this, xml, filename)));
 			}
 			catch (e)
 			{
@@ -4317,6 +4321,24 @@ App.prototype.saveLibrary = function(name, images, file, mode, noSpin, noReload,
 					}
 					else
 					{
+						this.confirm(mxResources.get('replaceIt', [name]), fn);
+					}
+				}
+				else if (mode == App.MODE_SERVER) {
+					var fn = mxUtils.bind(this, function () {
+						var file = new ServerLibrary(this, xml, name);
+
+						// Inserts data into local storage
+						file.saveFile(name, false, mxUtils.bind(this, function () {
+							this.hideDialog(true);
+							this.libraryLoaded(file, images);
+						}), error);
+					});
+
+					if (localStorage.getItem(name) == null) {
+						fn();
+					}
+					else {
 						this.confirm(mxResources.get('replaceIt', [name]), fn);
 					}
 				}
@@ -4775,6 +4797,12 @@ App.prototype.createFile = function(title, data, libs, mode, done, replace, fold
 			{
 				StorageFile.insertFile(this, title, data, mxUtils.bind(this, function(file)
 				{
+					complete();
+					this.fileCreated(file, libs, replace, done, clibs);
+				}), error);
+			}
+			else if (mode == App.MODE_SERVER) {
+				ServerFile.insertFile(this, title, data, mxUtils.bind(this, function (file) {
 					complete();
 					this.fileCreated(file, libs, replace, done, clibs);
 				}), error);
@@ -6411,6 +6439,9 @@ App.prototype.exportFile = function(data, filename, mimeType, base64Encoded, mod
 		{
 			this.confirm(mxResources.get('replaceIt', [filename]), fn);
 		}
+	}
+	else if (mode == App.MODE_SERVER) {
+		throw 'not impl';
 	}
 };
 

@@ -1,5 +1,4 @@
-﻿ * /
-/**
+﻿/**
  * Constructs a new point for the optional x and y coordinates. If no
  * coordinates are given, then the default values for <x> and <y> are used.
  * @constructor
@@ -29,7 +28,7 @@ ServerFile.prototype.maxAutosaveDelay = 20000;
 /**
  * A differentiator of the stored object type (file or lib)
  */
-ServerFile.prototype.type = 'S';
+ServerFile.prototype.type = 'F';
 
 /**
  * Translates this point by the given vector.
@@ -106,9 +105,9 @@ ServerFile.prototype.saveAs = function (title, success, error) {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerFile.insertFile = function (ui, title, data, success, error) {
-    var createStorageFile = mxUtils.bind(this, function (exists) {
+    var createServerFile = mxUtils.bind(this, function (exists) {
         var fn = function () {
-            var file = new StorageFile(ui, data, title);
+            var file = new ServerFile(ui, data, title);
 
             // Inserts data into local storage
             file.saveFile(title, false, function () {
@@ -125,9 +124,9 @@ ServerFile.insertFile = function (ui, title, data, success, error) {
     });
 
     ServerFile.getFileContent(ui, title, function (data) {
-        createStorageFile(data != null);
+        createServerFile(data != null);
     }, function () {
-        createStorageFile(false);
+        createServerFile(false);
     });
 };
 

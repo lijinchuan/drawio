@@ -13,3 +13,4 @@ window.DRAWIO_CONFIG = null; // Replace with your custom draw.io configurations.
 urlParams['sync'] = 'manual';
 urlParams['lang'] = 'zh';
 urlParams['offline'] = '1'
+urlParams['mode'] = 'server'

@@ -233,6 +233,8 @@ mxscript(drawDevUrl + 'js/diagramly/LocalFile.js');
 mxscript(drawDevUrl + 'js/diagramly/LocalLibrary.js');
 mxscript(drawDevUrl + 'js/diagramly/StorageFile.js');
 mxscript(drawDevUrl + 'js/diagramly/StorageLibrary.js');
+mxscript(drawDevUrl + 'js/diagramly/ServerFile.js');
+mxscript(drawDevUrl + 'js/diagramly/ServerLibrary.js');
 mxscript(drawDevUrl + 'js/diagramly/RemoteFile.js');
 mxscript(drawDevUrl + 'js/diagramly/RemoteLibrary.js');
 mxscript(drawDevUrl + 'js/diagramly/EmbedFile.js');
