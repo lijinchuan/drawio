@@ -4162,7 +4162,7 @@ App.prototype.pickLibrary = function(mode)
 		window.openKey = 'open';
 
 		window.listBrowserFiles = mxUtils.bind(this, function (success, error) {
-			ServerFile.listFiles(this, 'L', success, error);
+			ServerFile.listFiles(this, 'V', success, error);
 		});
 
 		window.openBrowserFile = mxUtils.bind(this, function (title, success, error) {
@@ -5111,6 +5111,34 @@ App.prototype.loadFile = function(id, sameWindow, file, success, force)
 					}), error);
 				}
 			}
+			else if (id.charAt(0) == 'V') {
+				this.spinner.stop();
+
+				var error = mxUtils.bind(this, function (e) {
+					this.handleError(e, mxResources.get('errorLoadingFile'), mxUtils.bind(this, function () {
+						var tempFile = this.getCurrentFile();
+						window.location.hash = (tempFile != null) ? tempFile.getHash() : '';
+					}));
+				});
+
+				id = decodeURIComponent(id.substring(1));
+
+				ServerFile.getFileInfo(this, id, mxUtils.bind(this, function (data) {
+					if (data != null) {
+						var serverFile = new ServerFile(this, data.content, id);
+						serverFile.setFileId(data.id);
+						this.fileLoaded(serverFile);
+
+						if (success != null) {
+							success();
+						}
+					}
+					else {
+						error({ message: mxResources.get('fileNotFound') });
+					}
+				}), error);
+
+			}
 			else if (file != null)
 			{
 				// File already loaded
@@ -5655,13 +5683,15 @@ App.prototype.loadLibraries = function(libs, done)
 								try {
 									var name = decodeURIComponent(id.substring(1));
 
-									ServerFile.getFileContent(this, name, mxUtils.bind(this, function (xml) {
+									ServerFile.getFileInfo(this, name, mxUtils.bind(this, function (xml) {
 										if (name == '.scratchpad' && xml == null) {
 											xml = this.emptyLibraryXml;
 										}
 
 										if (xml != null) {
-											onload(new ServerLibrary(this, xml, name));
+											var serverLib = new ServerLibrary(this, xml.content, name);
+											serverLib.setFileId(xml.id);
+											onload(serverLib);
 										}
 										else {
 											onerror();

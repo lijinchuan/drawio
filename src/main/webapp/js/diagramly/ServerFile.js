@@ -152,7 +152,7 @@ ServerFile.getFileContent = function (ui, title, success, error) {
             var ret = JSON.parse(req.getText());
             success(ret.data ? ret.data.content : null);
         }
-        if (error != null) {
+        else if (error != null) {
             error();
         }
 
@@ -175,7 +175,7 @@ ServerFile.getFileInfo = function (ui, title, success, error) {
             var ret = JSON.parse(req.getText());
             success(ret.data);
         }
-        if (error != null) {
+        else if (error != null) {
             error();
         }
 
@@ -373,8 +373,8 @@ ServerFile.listLocalStorageFiles = function (type) {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerFile.migrate = function (db) {
-    var lsFilesInfo = StorageFile.listLocalStorageFiles();
-    lsFilesInfo.push({ title: '.scratchpad', type: 'L' }); //Adding scratchpad also since it is a library (storage file)
+    var lsFilesInfo = ServerFile.listLocalStorageFiles();
+    lsFilesInfo.push({ title: '.scratchpad', type: 'V' }); //Adding scratchpad also since it is a library (storage file)
     var tx = db.transaction(['files', 'filesInfo'], 'readwrite');
     var files = tx.objectStore('files');
     var filesInfo = tx.objectStore('filesInfo');

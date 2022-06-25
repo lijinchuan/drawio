@@ -29,6 +29,13 @@
             <param name="req"></param>
             <returns></returns>
         </member>
+        <member name="M:Drawio.Net.API.DrawioController.FindByTitle(Drawio.Net.Domain.Contract.FindByTitleReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
         <member name="M:Drawio.Net.API.DrawioController.GetFileInfo(Drawio.Net.Domain.Contract.GetFileInfoReq)">
             <summary>
             

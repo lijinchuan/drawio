@@ -46,7 +46,7 @@ ServerLibrary.prototype.saveAs = function (title, success, error) {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerLibrary.prototype.getHash = function () {
-	return 'L' + encodeURIComponent(this.title);
+	return 'V' + encodeURIComponent(this.title);
 };
 
 /**

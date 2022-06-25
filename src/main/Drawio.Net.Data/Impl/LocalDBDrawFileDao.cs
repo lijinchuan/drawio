@@ -94,7 +94,7 @@ namespace Drawio.Net.Data.Impl
             }
             if (entity.Title == title && entity.Content == content)
             {
-                throw new Exception("未修改");
+                return fileId;
             }
             entity.Title = title;
             entity.Content = content;
