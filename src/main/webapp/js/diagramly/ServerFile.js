@@ -54,7 +54,7 @@ ServerFile.prototype.isAutosaveOptional = function () {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerFile.prototype.getHash = function () {
-    return 'L' + encodeURIComponent(this.getTitle());
+    return 'V' + encodeURIComponent(this.getTitle());
 };
 
 /**
@@ -65,6 +65,14 @@ ServerFile.prototype.getHash = function () {
  */
 ServerFile.prototype.getTitle = function () {
     return this.title;
+};
+
+ServerFile.prototype.getFileId = function () {
+    return this.fileid||0;
+};
+
+ServerFile.prototype.setFileId = function (val) {
+    this.fileid = val;
 };
 
 /**
@@ -107,6 +115,7 @@ ServerFile.prototype.saveAs = function (title, success, error) {
 ServerFile.insertFile = function (ui, title, data, success, error) {
     var createServerFile = mxUtils.bind(this, function (exists) {
         var fn = function () {
+
             var file = new ServerFile(ui, data, title);
 
             // Inserts data into local storage
@@ -137,18 +146,21 @@ ServerFile.insertFile = function (ui, title, data, success, error) {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerFile.getFileContent = function (ui, title, success, error) {
-    ui.getDatabaseItem(title, function (obj) {
-        success(obj != null ? obj.data : null);
-    },
-        mxUtils.bind(this, function () {
-            if (ui.database == null) //fallback to localstorage
-            {
-                ui.getLocalData(title, success);
-            }
-            else if (error != null) {
-                error();
-            }
-        }), 'files');
+
+    mxUtils.post("/api/Drawio/FindByTitle", "Title=" + encodeURIComponent(title), function (req) {
+        if (req.getStatus() >= 200 && req.getStatus() < 300) {
+            var ret = JSON.parse(req.getText());
+            success(ret.data ? ret.data.content : null);
+        }
+        if (error != null) {
+            error();
+        }
+
+    }, function (req) {
+        if (error != null) {
+            error();
+        }
+    });
 };
 
 /**
@@ -158,20 +170,20 @@ ServerFile.getFileContent = function (ui, title, success, error) {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerFile.getFileInfo = function (ui, title, success, error) {
-    ui.getDatabaseItem(title, function (obj) {
-        success(obj);
-    },
-        mxUtils.bind(this, function () {
-            if (ui.database == null) //fallback to localstorage
-            {
-                ui.getLocalData(title, function (data) {
-                    success(data != null ? { title: title } : null);
-                });
-            }
-            else if (error != null) {
-                error();
-            }
-        }), 'filesInfo');
+    mxUtils.post("/api/Drawio/FindByTitle", "Title=" + encodeURIComponent(title), function (req) {
+        if (req.getStatus() >= 200 && req.getStatus() < 300) {
+            var ret = JSON.parse(req.getText());
+            success(ret.data);
+        }
+        if (error != null) {
+            error();
+        }
+
+    }, function (req) {
+        if (error != null) {
+            error();
+        }
+    });
 };
 
 /**
@@ -204,24 +216,30 @@ ServerFile.prototype.saveFile = function (title, revision, success, error) {
 
                 this.setShadowModified(false);
                 var data = this.getData();
-
-                this.ui.setDatabaseItem(null, [{
-                    title: this.title,
-                    size: data.length,
-                    lastModified: Date.now(),
-                    type: this.type
-                }, {
-                    title: this.title,
-                    data: data
-                }], saveDone, mxUtils.bind(this, function () {
-                    if (this.ui.database == null) //fallback to localstorage
-                    {
-                        this.ui.setLocalData(this.title, data, saveDone);
-                    }
-                    else if (error != null) {
-                        error();
-                    }
-                }), ['filesInfo', 'files']);
+                var _this = this;
+                mxUtils.post('/api/Drawio/SaveFile',
+                    'FileId=' + this.getFileId() + '&title=' + encodeURIComponent(title) + '&' +
+                    'content=' + encodeURIComponent(data), function (req) {
+                        console.log(req);
+                        if (req.getStatus() == 200) {
+                            var ret = JSON.parse(req.getText());
+                            if (ret.data > 0) {
+                                _this.setFileId(ret.data);
+                                saveDone();
+                            } else {
+                                if (error != null) {
+                                    error();
+                                }
+                            }
+                        } else {
+                            if (error != null) {
+                                error();
+                            }
+                        }
+                    },
+                    function () {
+                        editorUi.alert('error insertFile');
+                    });
             }
             catch (e) {
                 if (error != null) {

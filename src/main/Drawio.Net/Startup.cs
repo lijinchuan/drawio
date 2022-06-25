@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -76,6 +77,20 @@ namespace Drawio.Net
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+#if !DEBUG
+            app.UseStaticFiles(new StaticFileOptions
+
+            {
+
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "webapp")),
+
+                //配置相对路径（建议和前面的名起个一样的，当然也可以起别的，注意前面要有/）
+
+                RequestPath = "/drawui"
+
+            });
+#endif
 
             app.UseRouting();
 

@@ -4157,6 +4157,42 @@ App.prototype.pickLibrary = function(mode)
 		
 		this.libFileInputElt.click();
 	}
+	else if (mode == App.MODE_SERVER) {
+		window.openNew = false;
+		window.openKey = 'open';
+
+		window.listBrowserFiles = mxUtils.bind(this, function (success, error) {
+			ServerFile.listFiles(this, 'L', success, error);
+		});
+
+		window.openBrowserFile = mxUtils.bind(this, function (title, success, error) {
+			ServerFile.getFileContent(this, title, success, error);
+		});
+
+		window.deleteBrowserFile = mxUtils.bind(this, function (title, success, error) {
+			ServerFile.deleteFile(this, title, success, error);
+		});
+
+		// Closes dialog after open
+		window.openFile = new OpenFile(mxUtils.bind(this, function (cancel) {
+			this.hideDialog(cancel);
+		}));
+
+		window.openFile.setConsumer(mxUtils.bind(this, function (xml, filename) {
+			try {
+				this.loadLibrary(new ServerLibrary(this, xml, filename));
+			}
+			catch (e) {
+				this.handleError(e, mxResources.get('errorLoadingFile'));
+			}
+		}));
+
+		// Removes openFile if dialog is closed
+		this.showDialog(new OpenDialog(this).container, 640,
+			480, true, true, function () {
+			window.openFile = null;
+		});
+	}
 	else
 	{
 		window.openNew = false;
@@ -4191,8 +4227,7 @@ App.prototype.pickLibrary = function(mode)
 			try
 			{
 				this.loadLibrary((mode == App.MODE_BROWSER) ? new StorageLibrary(this, xml, filename) :
-					(mode == App.MODE_SERVER ? new ServerLibrary(this, xml, filename) :
-						new LocalLibrary(this, xml, filename)));
+					(new LocalLibrary(this, xml, filename)));
 			}
 			catch (e)
 			{
@@ -5613,6 +5648,30 @@ App.prototype.loadLibraries = function(libs, done)
 									}
 								}), 0);
 							}
+						}
+						if (service == 'V') {
+							// Make asynchronous for barrier to work
+							window.setTimeout(mxUtils.bind(this, function () {
+								try {
+									var name = decodeURIComponent(id.substring(1));
+
+									ServerFile.getFileContent(this, name, mxUtils.bind(this, function (xml) {
+										if (name == '.scratchpad' && xml == null) {
+											xml = this.emptyLibraryXml;
+										}
+
+										if (xml != null) {
+											onload(new ServerLibrary(this, xml, name));
+										}
+										else {
+											onerror();
+										}
+									}), onerror);
+								}
+								catch (e) {
+									onerror();
+								}
+							}), 0);
 						}
 						else if (service == 'U')
 						{

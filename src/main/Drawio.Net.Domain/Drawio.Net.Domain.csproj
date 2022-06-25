@@ -50,6 +50,8 @@
     <Compile Include="Contract\BaseResp.cs" />
     <Compile Include="Contract\DeleteFileReq.cs" />
     <Compile Include="Contract\DeleteFileResp.cs" />
+    <Compile Include="Contract\FindByTitleReq.cs" />
+    <Compile Include="Contract\FindByTitleResp.cs" />
     <Compile Include="Contract\GetFileInfoReq.cs" />
     <Compile Include="Contract\GetFileInfoResp.cs" />
     <Compile Include="Contract\InsertFileReq.cs" />

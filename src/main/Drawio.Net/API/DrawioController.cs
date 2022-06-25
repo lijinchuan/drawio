@@ -38,15 +38,15 @@ namespace Drawio.Net.API
         /// <param name="req"></param>
         /// <returns></returns>
         [HttpPost]
-        public InsertFileResp InsertFile(InsertFileReq req)
+        public InsertFileResp InsertFile([FromForm] InsertFileReq req)
         {
-            var ret= _saveDrawFileService.InsertFile(req.Title, req.Content, 0);
+            var ret = _saveDrawFileService.InsertFile(req.Title, req.Content, 0);
 
             return new InsertFileResp
             {
-                Code=200,
-                Msg=ret.Msg,
-                Data=ret.Data
+                Code = 200,
+                Msg = ret.Msg,
+                Data = ret.Data
             };
         }
 
@@ -56,7 +56,7 @@ namespace Drawio.Net.API
         /// <param name="req"></param>
         /// <returns></returns>
         [HttpPost]
-        public DeleteFileResp DeleteFile(DeleteFileReq req)
+        public DeleteFileResp DeleteFile([FromForm] DeleteFileReq req)
         {
             var ret = _saveDrawFileService.DeleteFile(0, req.FileId);
 
@@ -74,7 +74,24 @@ namespace Drawio.Net.API
         /// <param name="req"></param>
         /// <returns></returns>
         [HttpPost]
-        public GetFileInfoResp GetFileInfo(GetFileInfoReq req)
+        public FindByTitleResp FindByTitle([FromForm] FindByTitleReq req)
+        {
+            var ret = _saveDrawFileService.FindByTitle(0, 0, req.Title);
+            return new FindByTitleResp
+            {
+                Code = 200,
+                Msg = ret.Msg,
+                Data = ret.Data
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public GetFileInfoResp GetFileInfo([FromForm] GetFileInfoReq req)
         {
             var ret = _saveDrawFileService.GetFileInfo(0, req.FileId);
             return new GetFileInfoResp
@@ -90,16 +107,16 @@ namespace Drawio.Net.API
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ListFilesResp ListFiles(ListFilesReq req)
+        [HttpPost]
+        public ListFilesResp ListFiles([FromForm] ListFilesReq req)
         {
             var ret = _saveDrawFileService.ListFiles(0);
 
             return new ListFilesResp
             {
-                Code=200,
-                Data=ret.Data,
-                Msg=ret.Msg
+                Code = 200,
+                Data = ret.Data,
+                Msg = ret.Msg
             };
         }
 
@@ -108,8 +125,8 @@ namespace Drawio.Net.API
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpGet]
-        public RenameFileResp RenameFile(RenameFileReq req)
+        [HttpPost]
+        public RenameFileResp RenameFile([FromForm]RenameFileReq req)
         {
             var ret = _saveDrawFileService.RenameFile(0, req.FileId, req.NewTitle);
 
@@ -126,8 +143,8 @@ namespace Drawio.Net.API
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        [HttpGet]
-        public SaveFileResp SaveFile(SaveFileReq req)
+        [HttpPost]
+        public SaveFileResp SaveFile([FromForm]SaveFileReq req)
         {
             var ret = _saveDrawFileService.SaveFile(0, req.FileId, req.Title, req.Content);
 

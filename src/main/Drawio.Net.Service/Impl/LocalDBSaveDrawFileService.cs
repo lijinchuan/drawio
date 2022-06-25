@@ -50,6 +50,33 @@ namespace Drawio.Net.Service.Impl
             }
         }
 
+        public OpResult<DrawFileModel> FindByTitle(int opId,int userId, string title)
+        {
+            try
+            {
+                var file = _drawFileDao.FindByTitle(userId, title);
+                if (file == null || file.UserId != opId)
+                {
+                    file = null;
+                }
+                return new OpResult<DrawFileModel>
+                {
+                    Data = _mapper.Map<DrawFileModel>(file),
+                    Success = true,
+                    Msg = "成功"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new OpResult<DrawFileModel>
+                {
+                    Data = null,
+                    Msg = "未知错误",
+                    Success = false
+                };
+            }
+        }
+
         public OpResult<DrawFileModel> GetFileInfo(int opId, long fileId)
         {
             try
@@ -152,16 +179,25 @@ namespace Drawio.Net.Service.Impl
             }
         }
 
-        public OpResult<bool> SaveFile(int opId, long fileId, string title, string content)
+        public OpResult<long> SaveFile(int opId, long fileId, string title, string content)
         {
             try
             {
+                if (fileId == 0)
+                {
+                    return new OpResult<long>
+                    {
+                        Data = _drawFileDao.InsertFile(title, content, opId),
+                        Success = true,
+                        Msg = "成功"
+                    };
+                }
                 var file = _drawFileDao.GetFileInfo(fileId);
                 if (file == null || file.UserId != opId)
                 {
                     throw new Exception("无权限");
                 }
-                return new OpResult<bool>
+                return new OpResult<long>
                 {
                     Data = _drawFileDao.SaveFile(fileId,title,content),
                     Success = true,
@@ -170,9 +206,9 @@ namespace Drawio.Net.Service.Impl
             }
             catch (Exception ex)
             {
-                return new OpResult<bool>
+                return new OpResult<long>
                 {
-                    Data = false,
+                    Data = 0,
                     Msg = ex.Message,
                     Success = false
                 };

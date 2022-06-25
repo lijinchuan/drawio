@@ -7,7 +7,9 @@ namespace Drawio.Net.Data
     {
         long InsertFile(string title, string content, int userId);
 
-        bool SaveFile(long fileId, string title, string content);
+        long SaveFile(long fileId, string title, string content);
+
+        DrawFileEntity FindByTitle(int userId, string title);
 
         bool RenameFile(long fileId, string newTitle);
 

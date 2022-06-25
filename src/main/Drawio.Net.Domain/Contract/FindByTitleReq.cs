@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Domain.Contract
 {
-    public class SaveFileResp:BaseResp<long>
+    public class FindByTitleReq
     {
+        public string Title
+        {
+            get;
+            set;
+        }
     }
 }

@@ -32,6 +32,12 @@ namespace Drawio.Net.Data.Impl
             return true;
         }
 
+        public DrawFileEntity FindByTitle(int userId, string title)
+        {
+            var entity = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), DrawFileEntity.INDEXUSERIDTITLE, new object[] { userId, title }).FirstOrDefault();
+            return entity;
+        }
+
         public DrawFileEntity GetFileInfo(long fileId)
         {
             var entity = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), fileId);
@@ -79,7 +85,7 @@ namespace Drawio.Net.Data.Impl
             return BigEntityTableEngine.LocalEngine.Update(nameof(DrawFileEntity), entity);
         }
 
-        public bool SaveFile(long fileId, string title, string content)
+        public long SaveFile(long fileId, string title, string content)
         {
             var entity = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), fileId);
             if (entity == null)
@@ -92,7 +98,9 @@ namespace Drawio.Net.Data.Impl
             }
             entity.Title = title;
             entity.Content = content;
-            return BigEntityTableEngine.LocalEngine.Update(nameof(DrawFileEntity), entity);
+            BigEntityTableEngine.LocalEngine.Update(nameof(DrawFileEntity), entity);
+
+            return fileId;
         }
     }
 }
