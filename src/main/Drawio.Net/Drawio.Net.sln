@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net", "Drawio.Net.csproj", "{F243E4C2-142D-4869-9001-D471FF91A6F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drawio.Net", "Drawio.Net.csproj", "{F243E4C2-142D-4869-9001-D471FF91A6F6}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "webapp", "..\webapp\", "{1D090647-03D5-4227-AA15-3D45D36DD9AA}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -26,6 +26,14 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "webapp", "..\webapp\", "{1D
 		SlnRelativePath = "..\webapp\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.Service", "..\Drawio.Net.Service\Drawio.Net.Service.csproj", "{4355E99F-4A52-42AE-A5FA-FA8D1156BBDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.Domain", "..\Drawio.Net.Domain\Drawio.Net.Domain.csproj", "{2D0FD3E1-39A3-4700-91ED-57C18EC8CF95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.Data", "..\Drawio.Net.Data\Drawio.Net.Data.csproj", "{337D3C14-2FF4-42F2-81C4-29FEF56AFAAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.Utils", "..\Drawio.Net.Utils\Drawio.Net.Utils.csproj", "{9D778787-831A-4C06-B575-905F92F6E760}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +48,22 @@ Global
 		{1D090647-03D5-4227-AA15-3D45D36DD9AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D090647-03D5-4227-AA15-3D45D36DD9AA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D090647-03D5-4227-AA15-3D45D36DD9AA}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{4355E99F-4A52-42AE-A5FA-FA8D1156BBDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4355E99F-4A52-42AE-A5FA-FA8D1156BBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4355E99F-4A52-42AE-A5FA-FA8D1156BBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4355E99F-4A52-42AE-A5FA-FA8D1156BBDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D0FD3E1-39A3-4700-91ED-57C18EC8CF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D0FD3E1-39A3-4700-91ED-57C18EC8CF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D0FD3E1-39A3-4700-91ED-57C18EC8CF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D0FD3E1-39A3-4700-91ED-57C18EC8CF95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{337D3C14-2FF4-42F2-81C4-29FEF56AFAAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337D3C14-2FF4-42F2-81C4-29FEF56AFAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337D3C14-2FF4-42F2-81C4-29FEF56AFAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{337D3C14-2FF4-42F2-81C4-29FEF56AFAAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D778787-831A-4C06-B575-905F92F6E760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D778787-831A-4C06-B575-905F92F6E760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D778787-831A-4C06-B575-905F92F6E760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D778787-831A-4C06-B575-905F92F6E760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

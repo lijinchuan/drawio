@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Drawio.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Drawio.Net.API.DrawioController">
+            <summary>
+            drawIo api
+            </summary>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.Test">
+            <summary>
+            test
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.InsertFile(Drawio.Net.Domain.Contract.InsertFileReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.DeleteFile(Drawio.Net.Domain.Contract.DeleteFileReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.GetFileInfo(Drawio.Net.Domain.Contract.GetFileInfoReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.ListFiles(Drawio.Net.Domain.Contract.ListFilesReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.RenameFile(Drawio.Net.Domain.Contract.RenameFileReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.DrawioController.SaveFile(Drawio.Net.Domain.Contract.SaveFileReq)">
+            <summary>
+            
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Drawio.Net.Modules.CustomAutofacModule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Drawio.Net.Modules.CustomAutofacModule.#ctor(Autofac.ContainerBuilder)">
+            <summary>
+            
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:Drawio.Net.Modules.CustomAutofacModule.Load(Autofac.ContainerBuilder)">
+            <summary>
+            AutoFac注册类
+            </summary>
+            <param name="builder"></param>
+        </member>
+    </members>
+</doc>
