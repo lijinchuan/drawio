@@ -55,7 +55,10 @@ namespace Drawio.Net.Data.Impl
             {
                 Title = title,
                 UserId = userId,
-                Content = content
+                Content = content,
+                CrateTime=DateTime.Now,
+                UpdateTime=DateTime.Now,
+                IsValid=true
             };
             BigEntityTableEngine.LocalEngine.Insert(nameof(DrawFileEntity), entity);
 
@@ -82,6 +85,7 @@ namespace Drawio.Net.Data.Impl
                 throw new Exception("名称未修改");
             }
             entity.Title = newTitle;
+            entity.UpdateTime = DateTime.Now;
             return BigEntityTableEngine.LocalEngine.Update(nameof(DrawFileEntity), entity);
         }
 
@@ -98,6 +102,7 @@ namespace Drawio.Net.Data.Impl
             }
             entity.Title = title;
             entity.Content = content;
+            entity.UpdateTime = DateTime.Now;
             BigEntityTableEngine.LocalEngine.Update(nameof(DrawFileEntity), entity);
 
             return fileId;
