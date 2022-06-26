@@ -3416,6 +3416,10 @@
 			
 			menu.addSeparator(parent);
 
+			menu.addItem('server...', null, function () {
+				editorUi.pickFile(App.MODE_SERVER);
+			}, parent);
+
 			if (isLocalStorage && urlParams['browser'] != '0')
 			{
 				menu.addItem(mxResources.get('browser') + '...', null, function()
@@ -3547,6 +3551,10 @@
 				}
 				
 				menu.addSeparator(parent);
+
+				menu.addItem('server...', null, function () {
+					editorUi.showLibraryDialog(null, null, null, null, App.MODE_SERVER);
+				}, parent);
 	
 				if (isLocalStorage && urlParams['browser'] != '0')
 				{
@@ -3650,6 +3658,10 @@
 				}
 				
 				menu.addSeparator(parent);
+
+				menu.addItem('server...', null, function () {
+					editorUi.pickLibrary(App.MODE_SERVER);
+				}, parent);
 	
 				if (isLocalStorage && urlParams['browser'] != '0')
 				{

@@ -50,6 +50,55 @@ namespace Drawio.Net.Service.Impl
             }
         }
 
+        public OpResult<bool> DeleteFile(int opId, int userId, string title)
+        {
+            var opResult = new OpResult<bool>
+            {
+                Data = true,
+                Msg = "操作成功",
+                Success = true
+            };
+
+            if (string.IsNullOrEmpty(title))
+            {
+                opResult = new OpResult<bool>
+                {
+                    Data = false,
+                    Success = false,
+                    Msg = "title不能为空"
+                };
+            }
+            else if (opId != userId)
+            {
+                opResult = new OpResult<bool>
+                {
+                    Data = false,
+                    Success = false,
+                    Msg = "没权限"
+                };
+            }
+            else
+            {
+
+                var file = _drawFileDao.FindByTitle(userId, title);
+                if (file == null || opId != file.UserId)
+                {
+                    opResult = new OpResult<bool>
+                    {
+                        Data = false,
+                        Success = false,
+                        Msg = "数据不存在"
+                    };
+                }
+                else
+                {
+                    _drawFileDao.DeleteFile(file.Id);
+                }
+            }
+
+            return opResult;
+        }
+
         public OpResult<DrawFileModel> FindByTitle(int opId,int userId, string title)
         {
             try

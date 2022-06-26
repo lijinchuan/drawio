@@ -146,15 +146,15 @@ function main()
 								{
 									return function()
 									{
-										if (window.parent.mxUtils.confirm(window.parent.mxResources.get('delete') + ' "' + k + '"?'))
+										if (window.parent.mxUtils.confirm(window.parent.mxResources.get('delete') + ' "' + k.title + '"?'))
 										{
-											window.parent.deleteBrowserFile(k, function()
+											window.parent.deleteBrowserFile(k.title, function()
 											{
 												window.location.reload();											
 											});
 										}
 									};
-								})(fileInfo.title));
+								})(fileInfo));
 			
 								window.parent.mxEvent.addListener(link, 'click', (function(k)
 								{
@@ -163,14 +163,18 @@ function main()
 										if (window.parent.openNew && window.parent.baseUrl != null)
 										{
 											var of = window.parent.openFile;
-											window.parent.openBrowserFile(k, function(data)
+											window.parent.openBrowserFile(k.title, function(data)
 											{
-												window.parent.openWindow(window.parent.baseUrl + '#L' + encodeURIComponent(k), function()
+												var hashKey = '#L';
+												if (k.hashKey) {
+													hashKey = '#'+k.hashKey;
+                                                }
+												window.parent.openWindow(window.parent.baseUrl + hashKey + encodeURIComponent(k.title), function ()
 												{
 													of.cancel(false);
 												}, function()
 												{
-													of.setData(data, k);
+													of.setData(data, k.title);
 												});									
 											}, function()
 											{
@@ -179,16 +183,16 @@ function main()
 										}
 										else
 										{
-											window.parent.openBrowserFile(k, function(data)
+											window.parent.openBrowserFile(k.title, function(data)
 											{
-												window.parent.openFile.setData(data, k);
+												window.parent.openFile.setData(data, k.title);
 											}, function()
 											{
 												//TODO add error
 											});
 										}
 									};
-								})(fileInfo.title));
+								})(fileInfo));
 							}
 						}
 						

@@ -3968,6 +3968,76 @@ App.prototype.pickFile = function(mode)
 				
 				this.openFileInputElt.click();
 			}
+			else if (mode == App.MODE_SERVER) {
+				this.hideDialog();
+				window.openNew = this.getCurrentFile() != null && !this.isDiagramEmpty();
+				window.baseUrl = this.getUrl();
+				window.openKey = 'open';
+
+				window.listBrowserFiles = mxUtils.bind(this, function (success, error) {
+					ServerFile.listFiles(this, 'F', success, error);
+				});
+
+				window.openBrowserFile = mxUtils.bind(this, function (title, success, error) {
+					ServerFile.getFileContent(this, title, success, error);
+				});
+
+				window.deleteBrowserFile = mxUtils.bind(this, function (title, success, error) {
+					ServerFile.deleteFile(this, title, success, error);
+				});
+
+				var prevValue = Editor.useLocalStorage;
+				Editor.useLocalStorage = (mode == App.MODE_BROWSER || mode == App.MODE_SERVER);
+				this.openFile();
+
+				// Installs local handler for opened files in same window
+				window.openFile.setConsumer(mxUtils.bind(this, function (xml, filename) {
+					var doOpenFile = mxUtils.bind(this, function () {
+						// Replaces PNG with XML extension
+						var dot = !this.useCanvasForExport && filename.substring(filename.length - 4) == '.png';
+
+						if (dot) {
+							filename = filename.substring(0, filename.length - 4) + '.drawio';
+						}
+
+						ServerFile.getFileInfo(this, filename, mxUtils.bind(this, function (data) {
+							if (data != null) {
+								var serverFile = new ServerFile(this, xml, filename);
+								serverFile.setFileId(data.id);
+								this.fileLoaded(serverFile);
+							}
+							else {
+								console.log({ message: mxResources.get('fileNotFound') });
+							}
+						}), function () {
+							console.log({ message: mxResources.get('fileNotFound') });
+						});
+					});
+
+					var currentFile = this.getCurrentFile();
+
+					if (currentFile == null || !currentFile.isModified()) {
+						doOpenFile();
+					}
+					else {
+						this.confirm(mxResources.get('allChangesLost'), null, doOpenFile,
+							mxResources.get('cancel'), mxResources.get('discardChanges'));
+					}
+				}));
+
+				// Extends dialog close to show splash screen
+				var dlg = this.dialog;
+				var dlgClose = dlg.close;
+
+				this.dialog.close = mxUtils.bind(this, function (cancel) {
+					Editor.useLocalStorage = prevValue;
+					dlgClose.apply(dlg, arguments);
+
+					if (this.getCurrentFile() == null) {
+						this.showSplash();
+					}
+				});
+			}
 			else
 			{
 				this.hideDialog();
@@ -4008,10 +4078,8 @@ App.prototype.pickFile = function(mode)
 						}
 		
 						this.fileLoaded((mode == App.MODE_BROWSER) ?
-							new StorageFile(this, xml, filename) : (
-								mode == App.MODE_SERVER ?
-									new ServerFile(this, xml, filename) :
-							new LocalFile(this, xml, filename)));
+							new StorageFile(this, xml, filename) :
+							new LocalFile(this, xml, filename));
 					});
 					
 					var currentFile = this.getCurrentFile();
@@ -4173,6 +4241,9 @@ App.prototype.pickLibrary = function(mode)
 			ServerFile.deleteFile(this, title, success, error);
 		});
 
+		var prevValue = Editor.useLocalStorage;
+		Editor.useLocalStorage = mode == App.MODE_BROWSER || mode == App.MODE_SERVER;
+
 		// Closes dialog after open
 		window.openFile = new OpenFile(mxUtils.bind(this, function (cancel) {
 			this.hideDialog(cancel);
@@ -4190,6 +4261,7 @@ App.prototype.pickLibrary = function(mode)
 		// Removes openFile if dialog is closed
 		this.showDialog(new OpenDialog(this).container, 640,
 			480, true, true, function () {
+		    Editor.useLocalStorage = prevValue;
 			window.openFile = null;
 		});
 	}

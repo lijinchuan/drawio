@@ -21,6 +21,8 @@ namespace Drawio.Net.Service
 
         OpResult<bool> DeleteFile(int opId, long fileId);
 
+        OpResult<bool> DeleteFile(int opId, int userId, string title);
+
         OpResult<DrawFileModel> FindByTitle(int opId,int userId, string title);
     }
 }

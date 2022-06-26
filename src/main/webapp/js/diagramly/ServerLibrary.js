@@ -20,7 +20,7 @@ mxUtils.extend(ServerLibrary, ServerFile);
 /**
  * A differentiator of the stored object type (file or lib)
  */
-ServerLibrary.prototype.type = 'L';
+ServerLibrary.prototype.type = 'V';
 
 /**
  * Translates this point by the given vector.

@@ -58,14 +58,26 @@ namespace Drawio.Net.API
         [HttpPost]
         public DeleteFileResp DeleteFile([FromForm] DeleteFileReq req)
         {
-            var ret = _saveDrawFileService.DeleteFile(0, req.FileId);
-
-            return new DeleteFileResp
+            if (req.FileId > 0)
             {
-                Code = 200,
-                Msg = ret.Msg,
-                Data = ret.Data
-            };
+                var ret = _saveDrawFileService.DeleteFile(0, req.FileId);
+                return new DeleteFileResp
+                {
+                    Code = 200,
+                    Msg = ret.Msg,
+                    Data = ret.Data
+                };
+            }
+            else
+            {
+                var ret = _saveDrawFileService.DeleteFile(0, 0, req.Title);
+                return new DeleteFileResp
+                {
+                    Code = 200,
+                    Msg = ret.Msg,
+                    Data = ret.Data
+                };
+            }
         }
 
         /// <summary>

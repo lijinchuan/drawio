@@ -238,7 +238,7 @@ ServerFile.prototype.saveFile = function (title, revision, success, error) {
                         }
                     },
                     function () {
-                        editorUi.alert('error insertFile');
+                        editorUi.alert('error saveFile');
                     });
             }
             catch (e) {
@@ -277,16 +277,23 @@ ServerFile.prototype.rename = function (title, success, error) {
     if (oldTitle != title) {
         ServerFile.getFileInfo(this.ui, title, mxUtils.bind(this, function (data) {
             var fn = mxUtils.bind(this, function () {
+
+                var _this = this;
+
+                ServerFile.PostApi('/api/Drawio/RenameFile', 'FileId=' + this.getFileId() + "&NewTitle=" + encodeURIComponent(title),
+                    function (data) {
+                        if (data) {
+                            _this.title = title;
+                            if (!_this.hasSameExtension(oldTitle, title)) {
+                                _this.setData(_this.ui.getFileData());
+                            }
+                            _this.ui.removeLocalData(oldTitle, success);
+                        } else {
+                            error();
+                        }
+                }, error);
+
                 this.title = title;
-
-                // Updates the data if the extension has changed
-                if (!this.hasSameExtension(oldTitle, title)) {
-                    this.setData(this.ui.getFileData());
-                }
-
-                this.saveFile(title, false, mxUtils.bind(this, function () {
-                    this.ui.removeLocalData(oldTitle, success);
-                }), error);
             });
 
             if (data != null) {
@@ -340,84 +347,21 @@ ServerFile.prototype.destroy = function () {
  * @param {number} dx X-coordinate of the translation.
  * @param {number} dy Y-coordinate of the translation.
  */
-ServerFile.listLocalStorageFiles = function (type) {
-    var filesInfo = [];
-
-    for (var i = 0; i < localStorage.length; i++) {
-        var key = localStorage.key(i);
-        var value = localStorage.getItem(key);
-
-        if (key.length > 0 && key.charAt(0) != '.' && value.length > 0) {
-            var isFile = (type == null || type == 'F') && (value.substring(0, 8) === '<mxfile ' ||
-                value.substring(0, 5) === '<?xml' || value.substring(0, 12) === '<!--[if IE]>');
-            var isLib = (type == null || type == 'L') && (value.substring(0, 11) === '<mxlibrary>');
-
-            if (isFile || isLib) {
-                filesInfo.push({
-                    title: key,
-                    type: isFile ? 'F' : 'L',
-                    size: value.length,
-                    lastModified: Date.now()
-                });
-            }
-        }
-    }
-
-    return filesInfo;
-};
-
-/**
- * Translates this point by the given vector.
- * 
- * @param {number} dx X-coordinate of the translation.
- * @param {number} dy Y-coordinate of the translation.
- */
-ServerFile.migrate = function (db) {
-    var lsFilesInfo = ServerFile.listLocalStorageFiles();
-    lsFilesInfo.push({ title: '.scratchpad', type: 'V' }); //Adding scratchpad also since it is a library (storage file)
-    var tx = db.transaction(['files', 'filesInfo'], 'readwrite');
-    var files = tx.objectStore('files');
-    var filesInfo = tx.objectStore('filesInfo');
-
-    for (var i = 0; i < lsFilesInfo.length; i++) {
-        var lsFileInfo = lsFilesInfo[i];
-        var data = localStorage.getItem(lsFileInfo.title);
-        files.add({
-            title: lsFileInfo.title,
-            data: data
-        });
-        filesInfo.add(lsFileInfo);
-    }
-};
-
-/**
- * Translates this point by the given vector.
- * 
- * @param {number} dx X-coordinate of the translation.
- * @param {number} dy Y-coordinate of the translation.
- */
 ServerFile.listFiles = function (ui, type, success, error) {
-    ui.getDatabaseItems(function (filesInfo) {
+
+    ServerFile.PostApi('/api/Drawio/ListFiles', '', function (data) {
         var files = [];
-
-        if (filesInfo != null) {
-            for (var i = 0; i < filesInfo.length; i++) {
-                if (filesInfo[i].title.charAt(0) != '.' && (type == null || filesInfo[i].type == type)) {
-                    files.push(filesInfo[i]);
-                }
-            }
+        for (var i = 0; i < data.length; i++) {
+            files.push({
+                title: data[i].title,
+                size: data[i].content.length,
+                type: 'F',
+                hashKey: 'V',
+                lastModified: new Date(data[i].updateTime).getTime()
+            });
         }
-
         success(files);
-    }, function () {
-        if (ui.database == null) //fallback to localstorage
-        {
-            success(ServerFile.listLocalStorageFiles(type));
-        }
-        else if (error != null) {
-            error();
-        }
-    }, 'filesInfo');
+    }, error);
 };
 
 /**
@@ -427,14 +371,28 @@ ServerFile.listFiles = function (ui, type, success, error) {
  * @param {number} dy Y-coordinate of the translation.
  */
 ServerFile.deleteFile = function (ui, title, success, error) {
-    ui.removeDatabaseItem([title, title], success, function () {
-        if (ui.database == null) //fallback to localstorage
-        {
-            localStorage.removeItem(title)
-            success();
+    ServerFile.PostApi('/api/Drawio/DeleteFile', 'FileId=0&Title=' + encodeURIComponent(title), function () {
+        success();
+    }, error);
+};
+
+ServerFile.PostApi = function (url, formData, success, error) {
+    mxUtils.post(url, formData, function (req) {
+        if (req.getStatus() >= 200 && req.getStatus() < 300) {
+            var ret = JSON.parse(req.getText());
+            if (ret.code == 200) {
+                success(ret.data);
+            } else {
+                error(ret.msg);
+            }
         }
         else if (error != null) {
             error();
         }
-    }, ['files', 'filesInfo']);
+
+    }, function (req) {
+        if (error != null) {
+            error();
+        }
+    });
 };
