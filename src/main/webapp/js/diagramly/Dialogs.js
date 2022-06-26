@@ -242,6 +242,10 @@ var StorageDialog = function(editorUi, fn, rowLimit)
 		{
 			addLogo(IMAGE_PATH + '/gitlab-logo.svg', mxResources.get('gitlab'), App.MODE_GITLAB, 'gitLab');
 		}
+
+		if (urlParams['mode'] == 'server') {
+			addLogo(IMAGE_PATH + '/osa_server.png', 'remote server', App.MODE_SERVER);
+        }
 	};
 	
 	div.appendChild(buttons);
@@ -354,6 +358,10 @@ var SplashDialog = function(editorUi)
 	{
 		logo.src = IMAGE_PATH + '/osa_database.png';
 		service = mxResources.get('browser');
+	}
+	else if (editorUi.mode == App.MODE_SERVER) {
+		logo.src = IMAGE_PATH + '/osa_server.png';
+		service = 'remote server';
 	}
 	else if (editorUi.mode == App.MODE_TRELLO)
 	{
@@ -2689,6 +2697,9 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 	{
 		logo.src = IMAGE_PATH + '/osa_database.png';
 	}
+	else if (editorUi.mode == App.MODE_SERVER) {
+		logo.src = IMAGE_PATH + '/osa_server.png';
+	}
 	else
 	{
 		logo.src = IMAGE_PATH + '/osa_drive-harddisk.png';
@@ -4450,6 +4461,18 @@ var CreateDialog = function(editorUi, title, createFn, cancelFn, dlgTitle, btnLa
 		}
 		
 		addLogo(IMAGE_PATH + '/osa_database.png', mxResources.get('browser'), App.MODE_BROWSER);
+	}
+
+	if (urlParams['mode'] == 'server') {
+		var serverOption = document.createElement('option');
+		serverOption.setAttribute('value', App.MODE_SERVER);
+		mxUtils.write(serverOption, 'remote server');
+		serviceSelect.appendChild(serverOption);
+
+		if (editorUi.mode == App.MODE_SERVER) {
+			serverOption.setAttribute('selected', 'selected');
+		}
+		addLogo(IMAGE_PATH + '/osa_server.png', 'remote server', App.MODE_SERVER);
 	}
 
 	function change(newMode)

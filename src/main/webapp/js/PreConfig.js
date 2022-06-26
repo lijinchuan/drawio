@@ -14,3 +14,4 @@ urlParams['sync'] = 'manual';
 urlParams['lang'] = 'zh';
 urlParams['offline'] = '1'
 urlParams['mode'] = 'server'
+urlParams['browser'] = '0'
