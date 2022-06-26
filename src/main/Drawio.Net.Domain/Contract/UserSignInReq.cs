@@ -31,5 +31,11 @@ namespace Drawio.Net.Domain.Contract
             get;
             set;
         }
+
+        public string redirectUri
+        {
+            get;
+            set;
+        }
     }
 }

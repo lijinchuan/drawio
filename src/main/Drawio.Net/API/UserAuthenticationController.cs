@@ -53,13 +53,13 @@ namespace Drawio.Net.API
                     //应该允许刷新身份验证会话。
                     AllowRefresh = true,
                     //身份验证票证过期的时间10分钟
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1),
                     //允许持久化
                     IsPersistent = true,
                     //cookie过期时间1天
-                    IssuedUtc = DateTime.Now.AddDays(1),
+                    IssuedUtc = DateTime.Now.AddYears(10),
                     //重定向url地址
-                    RedirectUri = ""
+                    RedirectUri = req.redirectUri
                 };
                 //授权cookie
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);

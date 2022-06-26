@@ -88,7 +88,7 @@ namespace Drawio.Net
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
 #if !DEBUG
