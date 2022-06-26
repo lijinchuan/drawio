@@ -1,5 +1,6 @@
 ﻿using Drawio.Net.Domain.Contract;
 using Drawio.Net.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,7 +15,7 @@ namespace Drawio.Net.API
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class DrawioController : ControllerBase
+    public class DrawioController : AuthControllerBaseController
     {
         private ISaveDrawFileService _saveDrawFileService;
         public DrawioController(ISaveDrawFileService saveDrawFileService)
@@ -40,7 +41,7 @@ namespace Drawio.Net.API
         [HttpPost]
         public InsertFileResp InsertFile([FromForm] InsertFileReq req)
         {
-            var ret = _saveDrawFileService.InsertFile(req.Title, req.Content, 0);
+            var ret = _saveDrawFileService.InsertFile(req.Title, req.Content, GetUserInfo().userId);
 
             return new InsertFileResp
             {
@@ -60,7 +61,7 @@ namespace Drawio.Net.API
         {
             if (req.FileId > 0)
             {
-                var ret = _saveDrawFileService.DeleteFile(0, req.FileId);
+                var ret = _saveDrawFileService.DeleteFile(GetUserInfo().userId, req.FileId);
                 return new DeleteFileResp
                 {
                     Code = 200,
@@ -70,7 +71,7 @@ namespace Drawio.Net.API
             }
             else
             {
-                var ret = _saveDrawFileService.DeleteFile(0, 0, req.Title);
+                var ret = _saveDrawFileService.DeleteFile(GetUserInfo().userId, GetUserInfo().userId, req.Title);
                 return new DeleteFileResp
                 {
                     Code = 200,
@@ -88,7 +89,7 @@ namespace Drawio.Net.API
         [HttpPost]
         public FindByTitleResp FindByTitle([FromForm] FindByTitleReq req)
         {
-            var ret = _saveDrawFileService.FindByTitle(0, 0, req.Title);
+            var ret = _saveDrawFileService.FindByTitle(GetUserInfo().userId, GetUserInfo().userId, req.Title);
             return new FindByTitleResp
             {
                 Code = 200,
@@ -105,7 +106,7 @@ namespace Drawio.Net.API
         [HttpPost]
         public GetFileInfoResp GetFileInfo([FromForm] GetFileInfoReq req)
         {
-            var ret = _saveDrawFileService.GetFileInfo(0, req.FileId);
+            var ret = _saveDrawFileService.GetFileInfo(GetUserInfo().userId, req.FileId);
             return new GetFileInfoResp
             {
                 Code = 200,
@@ -122,7 +123,7 @@ namespace Drawio.Net.API
         [HttpPost]
         public ListFilesResp ListFiles([FromForm] ListFilesReq req)
         {
-            var ret = _saveDrawFileService.ListFiles(0);
+            var ret = _saveDrawFileService.ListFiles(GetUserInfo().userId);
 
             return new ListFilesResp
             {
@@ -140,7 +141,7 @@ namespace Drawio.Net.API
         [HttpPost]
         public RenameFileResp RenameFile([FromForm]RenameFileReq req)
         {
-            var ret = _saveDrawFileService.RenameFile(0, req.FileId, req.NewTitle);
+            var ret = _saveDrawFileService.RenameFile(GetUserInfo().userId, req.FileId, req.NewTitle);
 
             return new RenameFileResp
             {
@@ -158,7 +159,7 @@ namespace Drawio.Net.API
         [HttpPost]
         public SaveFileResp SaveFile([FromForm]SaveFileReq req)
         {
-            var ret = _saveDrawFileService.SaveFile(0, req.FileId, req.Title, req.Content);
+            var ret = _saveDrawFileService.SaveFile(GetUserInfo().userId, req.FileId, req.Title, req.Content);
 
             return new SaveFileResp
             {

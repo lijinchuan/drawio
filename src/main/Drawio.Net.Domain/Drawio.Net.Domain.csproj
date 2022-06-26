@@ -62,6 +62,8 @@
     <Compile Include="Contract\RenameFileResp.cs" />
     <Compile Include="Contract\SaveFileReq.cs" />
     <Compile Include="Contract\SaveFileResp.cs" />
+    <Compile Include="Contract\UserSignInReq.cs" />
+    <Compile Include="Contract\UserSignInResp.cs" />
     <Compile Include="Entity\DrawFileEntity.cs" />
     <Compile Include="Model\DrawFileModel.cs" />
     <Compile Include="Model\OpResult.cs" />

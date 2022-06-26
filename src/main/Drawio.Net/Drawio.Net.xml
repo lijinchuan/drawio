@@ -4,6 +4,17 @@
         <name>Drawio.Net</name>
     </assembly>
     <members>
+        <member name="T:Drawio.Net.API.AuthControllerBaseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Drawio.Net.API.AuthControllerBaseController.GetUserInfo">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Drawio.Net.API.DrawioController">
             <summary>
             drawIo api
@@ -62,6 +73,30 @@
             
             </summary>
             <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Drawio.Net.API.UserAuthenticationController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.UserSignInAsync(Drawio.Net.Domain.Contract.UserSignInReq)">
+             <summary>
+             认证
+             </summary>
+            <param name="req"></param>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.GetUser">
+            <summary>
+            获取用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.UserSignOutAsync">
+            <summary>
+            注销
+            </summary>
+            <param name="returnUrl"></param>
             <returns></returns>
         </member>
         <member name="T:Drawio.Net.Modules.CustomAutofacModule">

@@ -1,8 +1,10 @@
 using Autofac;
 using AutoMapper;
 using Drawio.Net.Modules;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +55,17 @@ namespace Drawio.Net
             {
                 sw.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                options.AccessDeniedPath = null;
+            });
+
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -94,6 +107,9 @@ namespace Drawio.Net
 
             app.UseRouting();
 
+            //添加认证（认证需要在Map方法调用前写，否则无效）
+            app.UseAuthentication();
+            //授权
             app.UseAuthorization();
 
             app.UseSwagger();
