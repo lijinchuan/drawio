@@ -21,11 +21,11 @@ namespace Drawio.Net.API
         /// 
         /// </summary>
         /// <returns></returns>
-        protected (int userId,string userName) GetUserInfo()
+        protected (string userId,string userName) GetUserInfo()
         {
             if (HttpContext.User.Identity.IsAuthenticated)  //判断用户是否通过认证
             {
-                return (int.Parse(HttpContext.User.Claims.First(p=>p.Type==ClaimTypes.NameIdentifier).Value)
+                return (HttpContext.User.Claims.First(p=>p.Type==ClaimTypes.NameIdentifier).Value
                     , HttpContext.User.Identity.Name);
             }
 

@@ -9,20 +9,20 @@ namespace Drawio.Net.Service
 {
     public interface ISaveDrawFileService
     {
-        OpResult<long> InsertFile(string title, string content, int userId);
+        OpResult<long> InsertFile(string title, string content, string userId);
 
-        OpResult<long> SaveFile(int opId, long fileId, string title, string content);
+        OpResult<long> SaveFile(string opId, long fileId, string title, string content);
 
-        OpResult<bool> RenameFile(int opId, long fileId, string newTitle);
+        OpResult<bool> RenameFile(string opId, long fileId, string newTitle);
 
-        OpResult<List<DrawFileModel>> ListFiles(int userId);
+        OpResult<List<DrawFileModel>> ListFiles(string userId);
 
-        OpResult<DrawFileModel> GetFileInfo(int opId, long fileId);
+        OpResult<DrawFileModel> GetFileInfo(string opId, long fileId);
 
-        OpResult<bool> DeleteFile(int opId, long fileId);
+        OpResult<bool> DeleteFile(string opId, long fileId);
 
-        OpResult<bool> DeleteFile(int opId, int userId, string title);
+        OpResult<bool> DeleteFile(string opId, string userId, string title);
 
-        OpResult<DrawFileModel> FindByTitle(int opId,int userId, string title);
+        OpResult<DrawFileModel> FindByTitle(string opId, string userId, string title);
     }
 }

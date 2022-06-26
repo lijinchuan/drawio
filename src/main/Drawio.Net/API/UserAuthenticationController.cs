@@ -4,11 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Drawio.Net.Domain.Contract;
+using Drawio.Net.Domain.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Drawio.Net.API
 {
@@ -29,7 +31,7 @@ namespace Drawio.Net.API
         {
             try
             {
-                if (req.UserId <= 0)
+                if (string.IsNullOrWhiteSpace(req.UserId))
                 {
                     throw new ArgumentNullException("UserId");
                 }
@@ -42,7 +44,6 @@ namespace Drawio.Net.API
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, req.UserName),
-                    new Claim(ClaimTypes.Role, req.Role),
                     new Claim(ClaimTypes.NameIdentifier,req.UserId.ToString())
                 };
                 //通过Claim来创建ClaimsIdentity 类似于通过用户的身份来创建身份证
@@ -64,6 +65,11 @@ namespace Drawio.Net.API
                 //授权cookie
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
+                if (!string.IsNullOrWhiteSpace(req.redirectUri))
+                {
+                    return Redirect(req.redirectUri);
+                }
+
                 return Ok(new
                 {
                     code = 200,
@@ -78,6 +84,64 @@ namespace Drawio.Net.API
                     messgae = ex.Message
                 });
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public string GetToken(string uid,string name)
+        {
+            return new Utils.EncryHelper().Encrypto(JsonConvert.SerializeObject(new UserInfoToken
+            {
+                UserId = uid,
+                UserName = name,
+                CreateTime=DateTime.Now,
+                ToUrl= "http://118.24.243.32:8080/webapp/?dev=1"
+            }));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Jump([FromQuery]string token)
+        {
+            try
+            {
+                var json = new Utils.EncryHelper().Decrypto(token);
+                var user = JsonConvert.DeserializeObject<UserInfoToken>(json);
+                if (DateTime.Now.Subtract(user.CreateTime).TotalMinutes > 3)
+                {
+                    throw new Exception("token失效");
+                }
+
+                return await UserSignInAsync(new UserSignInReq
+                {
+                    Level = user.Level,
+                    redirectUri = user.ToUrl,
+                    Role = user.Role,
+                    UserId = user.UserId??user.UserName,
+                    UserName = user.UserName
+                });
+            }
+            catch
+            {
+                return Ok(new
+                {
+                    code = 404,
+                    message = "非法请求"
+                });
+            }
+
         }
 
         /// <summary>

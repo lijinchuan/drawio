@@ -67,6 +67,7 @@
     <Compile Include="Entity\DrawFileEntity.cs" />
     <Compile Include="Model\DrawFileModel.cs" />
     <Compile Include="Model\OpResult.cs" />
+    <Compile Include="Model\UserInfoToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

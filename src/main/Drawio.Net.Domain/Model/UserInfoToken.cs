@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drawio.Net.Domain.Contract
+namespace Drawio.Net.Domain.Model
 {
-    public class UserSignInReq
+    public class UserInfoToken
     {
         public string UserId
         {
@@ -32,7 +32,13 @@ namespace Drawio.Net.Domain.Contract
             set;
         }
 
-        public string redirectUri
+        public string ToUrl
+        {
+            get;
+            set;
+        }
+
+        public DateTime CreateTime
         {
             get;
             set;

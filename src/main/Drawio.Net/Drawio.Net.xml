@@ -86,6 +86,22 @@
              </summary>
             <param name="req"></param>
         </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.GetToken(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="uid"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.Jump(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="token"></param>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
         <member name="M:Drawio.Net.API.UserAuthenticationController.GetUser">
             <summary>
             获取用户信息

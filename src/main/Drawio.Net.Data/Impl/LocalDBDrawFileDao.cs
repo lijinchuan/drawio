@@ -32,7 +32,7 @@ namespace Drawio.Net.Data.Impl
             return true;
         }
 
-        public DrawFileEntity FindByTitle(int userId, string title)
+        public DrawFileEntity FindByTitle(string userId, string title)
         {
             var entity = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), DrawFileEntity.INDEXUSERIDTITLE, new object[] { userId, title }).FirstOrDefault();
             return entity;
@@ -44,7 +44,7 @@ namespace Drawio.Net.Data.Impl
             return entity;
         }
 
-        public long InsertFile(string title, string content, int userId)
+        public long InsertFile(string title, string content, string userId)
         {
             var entity = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), DrawFileEntity.INDEXUSERIDTITLE, new object[] { userId, title }).FirstOrDefault();
             if (entity != null)
@@ -65,7 +65,7 @@ namespace Drawio.Net.Data.Impl
             return entity.Id;
         }
 
-        public List<DrawFileEntity> ListFiles(int userId)
+        public List<DrawFileEntity> ListFiles(string userId)
         {
             var entities = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), DrawFileEntity.INDEXUSERID, new object[] { userId });
 

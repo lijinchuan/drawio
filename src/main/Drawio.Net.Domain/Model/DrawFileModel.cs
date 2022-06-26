@@ -14,7 +14,7 @@ namespace Drawio.Net.Domain.Model
             set;
         }
 
-        public int UserId
+        public string UserId
         {
             get;
             set;
