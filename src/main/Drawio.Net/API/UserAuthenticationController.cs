@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Drawio.Net.Domain.Contract;
 using Drawio.Net.Domain.Model;
+using Drawio.Net.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -195,6 +196,18 @@ namespace Drawio.Net.API
                 code = 200,
                 messgae = "注销成功"
             });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vCodeService"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> VCode([FromServices]IVCodeService vCodeService)
+        {
+            return File(vCodeService.GenVode(HttpContext.User.Identity.Name), "image/Gif");
         }
     }
 }
