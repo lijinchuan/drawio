@@ -86,6 +86,26 @@
              </summary>
             <param name="req"></param>
         </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.Register(Drawio.Net.Service.IAccountService,System.String,System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name=""></param>
+            <param name="username"></param>
+            <param name="password"></param>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.Login(Drawio.Net.Service.IAccountService,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="accountService"></param>
+            <param name="username"></param>
+            <param name="password"></param>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
         <member name="M:Drawio.Net.API.UserAuthenticationController.GetToken(System.String,System.String)">
             <summary>
             

@@ -90,6 +90,48 @@ namespace Drawio.Net.API
         /// <summary>
         /// 
         /// </summary>
+        /// <param name=""></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Register([FromServices]IAccountService accountService,string um_captcha, string username, string password, string email)
+        {
+            var ret=accountService.Register(username, password, email);
+
+            return Ok(new
+            {
+                code = 200,
+                success=ret.Data,
+                messgae = ret.Msg
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accountService"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Login([FromServices] IAccountService accountService, string username, string password)
+        {
+            var ret = accountService.Login(username, password);
+
+            return Ok(new
+            {
+                code = 200,
+                success = ret.Data,
+                messgae = ret.Msg
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="uid"></param>
         /// <param name="name"></param>
         /// <returns></returns>

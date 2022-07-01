@@ -23,4 +23,10 @@
     <ProjectReference Include="..\Drawio.Net.Utils\Drawio.Net.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ESBConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
