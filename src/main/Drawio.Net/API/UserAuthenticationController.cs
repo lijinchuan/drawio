@@ -117,9 +117,21 @@ namespace Drawio.Net.API
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Login([FromServices] IAccountService accountService, string username, string password)
+        public async Task<IActionResult> Login([FromServices] IAccountService accountService, string username, string password)
         {
             var ret = accountService.Login(username, password);
+
+            if (ret.Data)
+            {
+
+                return await UserSignInAsync(new UserSignInReq
+                {
+                    UserId = "",
+                    Level = 0,
+                    Role = "",
+                    UserName = username
+                });
+            }
 
             return Ok(new
             {

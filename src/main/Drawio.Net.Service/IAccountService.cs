@@ -12,5 +12,7 @@ namespace Drawio.Net.Service
         OpResult<bool> Register(string userName,string password,string email);
 
         OpResult<bool> Login(string userName, string password);
+
+        UserInfoToken GetUserInfo(string userName);
     }
 }

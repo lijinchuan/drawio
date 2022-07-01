@@ -23,6 +23,30 @@ namespace Drawio.Net.Service.Impl
             };
         }
 
+        public UserInfoToken GetUserInfo(string userName)
+        {
+            var resp = ESBClient.DoSOARequest2<GetUserListResponse>(Ljc.Com.Blog.Model.Consts.SNo, Ljc.Com.Blog.Model.Consts.Func_GetUserList,
+                new GetUserListRequest
+                {
+                    IsValid = true,
+                    Pi = 1,
+                    Ps = 10,
+                    SearchWord = userName
+                });
+            
+            if (resp.Items.Count > 0)
+            {
+                return new UserInfoToken
+                {
+                    CreateTime=resp.Items[0].CTime,
+                    Level=resp.Items[0].UserLevel,
+                    UserId= resp.Items[0].UserId,
+                    UserName=resp.Items[0].UserName
+                };
+            }
+            return null;
+        }
+
         public OpResult<bool> Register(string userName, string password, string email)
         {
             var resp = ESBClient.DoSOARequest2<UserRegV1Response>(Ljc.Com.Blog.Model.Consts.SNo, Ljc.Com.Blog.Model.Consts.Func_UserRegV1,
