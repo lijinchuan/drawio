@@ -86,7 +86,7 @@
              </summary>
             <param name="req"></param>
         </member>
-        <member name="M:Drawio.Net.API.UserAuthenticationController.Register(Drawio.Net.Service.IAccountService,System.String,System.String,System.String,System.String)">
+        <member name="M:Drawio.Net.API.UserAuthenticationController.Register(Drawio.Net.Service.IAccountService,Drawio.Net.Service.IVCodeService,System.String,System.String,System.String,System.String)">
             <summary>
             
             </summary>
@@ -104,14 +104,6 @@
             <param name="username"></param>
             <param name="password"></param>
             <param name="email"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Drawio.Net.API.UserAuthenticationController.GetToken(System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="uid"></param>
-            <param name="name"></param>
             <returns></returns>
         </member>
         <member name="M:Drawio.Net.API.UserAuthenticationController.Jump(System.String)">
@@ -133,6 +125,25 @@
             注销
             </summary>
             <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.VCode(Drawio.Net.Service.IVCodeService)">
+            <summary>
+            验证码
+            </summary>
+            <param name="vCodeService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Drawio.Net.API.UserAuthenticationController.Process(Drawio.Net.Service.IAccountService,Drawio.Net.Service.IVCodeService,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            处理
+            </summary>
+            <param name="accountService"></param>
+            <param name="action"></param>
+            <param name="username"></param>
+            <param name="password"></param>
+            <param name="um_captcha"></param>
+            <param name="email"></param>
             <returns></returns>
         </member>
         <member name="T:Drawio.Net.Modules.CustomAutofacModule">

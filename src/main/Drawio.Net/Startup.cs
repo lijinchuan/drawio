@@ -107,8 +107,9 @@ namespace Drawio.Net
 
                 //配置相对路径（建议和前面的名起个一样的，当然也可以起别的，注意前面要有/）
 
-                RequestPath = "/drawui"
-
+                RequestPath =new PathString("/drawui"),
+                
+                
             });
 #endif
 
@@ -130,6 +131,16 @@ namespace Drawio.Net
                 //要在应用的根(http://localhost:<port>/) 处提供 Swagger UI，请将 RoutePrefix 属性设置为空字符串：
 
             });
+
+            //支持跨域请求
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+
+            });
+
             _ = app.UseMvc();
             app.UseEndpoints(endpoints =>
             {

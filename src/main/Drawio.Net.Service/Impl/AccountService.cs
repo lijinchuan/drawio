@@ -6,18 +6,33 @@ namespace Drawio.Net.Service.Impl
 {
     public class AccountService : IAccountService
     {
-        public OpResult<bool> Login(string userName, string password)
+        public OpResult<UserInfoToken> Login(string userName, string password)
         {
-            var resp = ESBClient.DoSOARequest2<UserLoginV1Response>(Ljc.Com.Blog.Model.Consts.SNo, Ljc.Com.Blog.Model.Consts.Func_UserLoginV1,
+            var resp = ESBClient.DoSOARequest2<UserLoginV2Response>(Ljc.Com.Blog.Model.Consts.SNo, Ljc.Com.Blog.Model.Consts.Func_UserLoginV2,
                 new UserLoginV1Request
                 {
                     UserPassword = password,
                     UserName = userName
                 });
 
-            return new OpResult<bool>
+            if (resp.Code != 1)
             {
-                Data=resp.Code==1,
+                return new OpResult<UserInfoToken>
+                {
+                    Msg=resp.Msg,
+                    Success=false
+                };
+            }
+
+            return new OpResult<UserInfoToken>
+            {
+                Data=resp.User==null?null:new UserInfoToken
+                {
+                   CreateTime=resp.User.CTime,
+                   Level=resp.User.UserLevel,
+                   UserId=resp.User.UserId,
+                   UserName=resp.User.UserName
+                },
                 Msg=resp.Msg,
                 Success=resp.Code==1
             };

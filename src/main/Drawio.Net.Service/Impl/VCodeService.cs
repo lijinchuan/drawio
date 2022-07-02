@@ -14,7 +14,7 @@ namespace Drawio.Net.Service.Impl
         ///  生成的验证码
         /// </summary>
         private static ConcurrentDictionary<string, string> UserVCodes = new ConcurrentDictionary<string, string>();
-
+        private const int MAXCODES = 1000;
         private static int ImgWidth = 60;
         private static int ImgHeight = 30;
         private const string allChar = "2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,T,U,W,X,Y,Z";
@@ -50,6 +50,10 @@ namespace Drawio.Net.Service.Impl
 
         public byte[] GenVode(string userName)
         {
+            if (UserVCodes.Count > MAXCODES)
+            {
+                UserVCodes.Clear();
+            }
             using (Bitmap image = new Bitmap(ImgWidth, ImgHeight))
             {
                 using (Graphics g = Graphics.FromImage(image))
@@ -99,6 +103,24 @@ namespace Drawio.Net.Service.Impl
                     }
                 }
             }
+        }
+
+        public bool Valid(string key, string code)
+        {
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                if (UserVCodes.TryRemove(key, out string vcode))
+                {
+                    return code.Equals(vcode, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            return false;
+        }
+
+        public string GetCookieName()
+        {
+            return "_vcode";
         }
     }
 }

@@ -1110,6 +1110,8 @@ App.main = function(callback, createUi)
 		mxResources.loadDefaultBundle = false;
 		doLoad(mxResources.getDefaultBundle(RESOURCE_BASE, mxLanguage) ||
 			mxResources.getSpecialBundle(RESOURCE_BASE, mxLanguage));
+
+		registerLoginBox();
 	};
 
 	// Sends load event if configuration is requested and waits for configure message
@@ -7953,37 +7955,38 @@ Editor.prototype.resetGraph = function()
 	}
 };
 
-mxscript(App.TRELLO_JQUERY_URL, function () {
-	// Must load this after the dropbox SDK since they use the same namespace
-	var loginLink = $('<a href="##" class="collect-btn collect-no">Hi, 请登录</a>');
-	loginLink.css('position', 'absolute');
-	loginLink.css('top', '2px');
-	loginLink.css('left', '200px');
-	loginLink.css('margin-top', '2px');
-	loginLink.css('z-index', '99');
-	$("body").append(loginLink);
-	mxscript(App.UM_SCRIPT_URL, function () {
-		
+function registerLoginBox() {
+	mxscript(App.TRELLO_JQUERY_URL, function () {
+		// Must load this after the dropbox SDK since they use the same namespace
+		var loginLink = $('<a href="##" class="collect-btn collect-no">' + mxResources.get('helloLogin') + '</a>');
+		loginLink.css('position', 'absolute');
+		loginLink.css('top', '2px');
+		loginLink.css('left', '200px');
+		loginLink.css('margin-top', '2px');
+		loginLink.css('z-index', '99');
+		$("body").append(loginLink);
+		mxscript(App.UM_SCRIPT_URL, function () {
 
-		$("body").append('<div class="overlay-login"></div>\
+
+			$("body").append('<div class="overlay-login"></div>\
 			<div id="sign">\
 			<div class="part loginPart">\
 				<form id="login" action="###" method="post" novalidate="novalidate">\
-					<div id="register-active" class="switch"><i class="fa fa-toggle-on"></i>切换注册</div>        <h3>登录<p class="status"></p></h3>\
+					<div id="register-active" class="switch"><i class="fa fa-toggle-on"></i>'+ mxResources.get('changeReg') + '</div>        <h3>' + mxResources.get('loginIn') + '<p class="status"></p></h3>\
 					<p>\
 						<label class="icon" for="username"><i class="fa fa-user"></i></label>\
-						<input class="input-control" id="username" type="text" placeholder="请输入用户名" name="username" required="" aria-required="true">\
+						<input class="input-control" id="username" type="text" placeholder="'+ mxResources.get('inputYourName') + '" name="username" required="" aria-required="true">\
 				</p>\
 						<p>\
 							<label class="icon" for="password"><i class="fa fa-lock"></i></label>\
-							<input class="input-control" id="password" type="password" placeholder="请输入密码" name="password" required="" aria-required="true">\
+							<input class="input-control" id="password" type="password" placeholder="'+ mxResources.get('inputYourPassword') + '" name="password" required="" aria-required="true">\
 				</p>\
 							<p class="safe">\
-								<label class="remembermetext" for="rememberme"><input name="rememberme" type="checkbox" checked="checked" id="rememberme" class="rememberme" value="forever">记住我的登录</label>\
-									<a class="lost" href="handler.ashx?action=lostpassword">忘记密码 ?</a>\
+								<label class="remembermetext" for="rememberme"><input name="rememberme" type="checkbox" checked="checked" id="rememberme" class="rememberme" value="forever">'+ mxResources.get('rememberMyLogin') + '</label>\
+									<a class="lost" href="handler.ashx?action=lostpassword">'+ mxResources.get('forgotMyPassword') + '</a>\
 				</p>\
 								<p>\
-									<input class="submit" type="submit" value="登录" name="submit">\
+									<input class="submit" type="submit" value="' + mxResources.get('loginIn') + '" name="submit">\
 				</p>\
 									<a class="close"><i class="fa fa-times"></i></a>\
 									<input type="hidden" id="security" name="security" value="41d536f7bd">\
@@ -7992,32 +7995,33 @@ mxscript(App.TRELLO_JQUERY_URL, function () {
 		</div>\
 									<div class="part registerPart">\
 										<form id="register" action="?action=register" method="post" novalidate="novalidate">\
-											<div id="login-active" class="switch"><i class="fa fa-toggle-off"></i>切换登录</div>\
-											<h3>注册<p class="status"></p></h3>\
+											<div id="login-active" class="switch"><i class="fa fa-toggle-off"></i>'+ mxResources.get('changeLogin') + '</div>\
+											<h3>'+ mxResources.get('regText') + '<p class="status"></p></h3>\
 											<p>\
 												<label class="icon" for="user_name"><i class="fa fa-user"></i></label>\
-												<input class="input-control" id="user_name" type="text" name="user_name" placeholder="输入英文用户名" required="" aria-required="true">\
+												<input class="input-control" id="user_name" type="text" name="user_name" placeholder="'+ mxResources.get('inputEnglistName') + '" required="" aria-required="true">\
 				</p>\
 												<p>\
 													<label class="icon" for="user_email"><i class="fa fa-envelope"></i></label>\
-													<input class="input-control" id="user_email" type="email" name="user_email" placeholder="输入常用邮箱" required="" aria-required="true">\
+													<input class="input-control" id="user_email" type="email" name="user_email" placeholder="'+ mxResources.get('inputEmail') + '" required="" aria-required="true">\
 				</p>\
 													<p>\
 														<label class="icon" for="user_pass"><i class="fa fa-lock"></i></label>\
-														<input class="input-control" id="user_pass" type="password" name="user_pass" placeholder="密码最小长度为6" required="" aria-required="true">\
+														<input class="input-control" id="user_pass" type="password" name="user_pass" placeholder="'+ mxResources.get('passwrodMinLenText') + '" required="" aria-required="true">\
 				</p>\
 														<p>\
 															<label class="icon" for="user_pass2"><i class="fa fa-retweet"></i></label>\
-															<input class="input-control" type="password" id="user_pass2" name="user_pass2" placeholder="再次输入密码" required="" aria-required="true">\
+															<input class="input-control" type="password" id="user_pass2" name="user_pass2" placeholder="'+ mxResources.get('inputPasswordAgain') + '" required="" aria-required="true">\
 				</p>\
 															<p id="captcha_inline">\
-																<input class="input-control inline" type="text" id="um_captcha" name="um_captcha" placeholder="输入验证码" required="" aria-required="true">\
-																	<img src="/blog/VCode.aspx" class="captcha_img inline" title="点击刷新验证码">\
-																		<input class="submit inline" type="submit" value="注册" name="submit">\
+																<input class="input-control inline" type="text" id="um_captcha" name="um_captcha" placeholder="'+ mxResources.get('inputValidCode') + '" required="" aria-required="true">\
+																	<img src="/api/UserAuthentication/VCode" class="captcha_img inline" title="'+ mxResources.get('refrashValidCode') + '">\
+																		<input class="submit inline" type="submit" value="'+ mxResources.get('regText') + '" name="submit">\
 				</p>\
 																		<a class="close"><i class="fa fa-times"></i></a>\
 			</form>\
 		</div>\
 	</div>');
+		});
 	});
-});
+};
