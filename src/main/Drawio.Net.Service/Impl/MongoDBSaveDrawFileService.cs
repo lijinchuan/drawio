@@ -194,10 +194,10 @@ namespace Drawio.Net.Service.Impl
       .GetCollection<MongoDrawFileEntity>(MongoDrawFileEntity.CollectionName);
             var filter = new FilterDefinitionBuilder<MongoDrawFileEntity>().Eq(p => p.Fid, fileId);
             var updateBuilder = new UpdateDefinitionBuilder<MongoDrawFileEntity>();
-            UpdateDefinition<MongoDrawFileEntity> update = null;
+            UpdateDefinition<MongoDrawFileEntity> update = updateBuilder.Combine();
             if (title != file.Title)
             {
-                update=updateBuilder.Set(p => p.Title, title);
+                update = update.Set(p => p.Title, title);
             }
             if (content != file.Content)
             {

@@ -20,7 +20,7 @@ namespace Drawio.Net.API
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UserAuthenticationController : ControllerBase
+    public class UserAuthenticationController : AuthControllerBaseController
     {
         /// <summary>
         /// 认证
@@ -227,11 +227,11 @@ namespace Drawio.Net.API
             {
                 if (HttpContext.User.Identity.IsAuthenticated)  //判断用户是否通过认证
                 {
-                    string name = HttpContext.User.Claims.ToList().First(p => p.Type == ClaimTypes.Name).Value;
+                    var userInfo = GetUserInfo();
                     return Ok(new
                     {
                         code = 200,
-                        message = $"当前用户是{name}," + HttpContext.User.Identity.Name
+                        message = $"当前用户是userId:{userInfo.userId},userName:{userInfo.userName},Name:{HttpContext.User.Identity.Name}"
                     }) ;
                 }
                 else
