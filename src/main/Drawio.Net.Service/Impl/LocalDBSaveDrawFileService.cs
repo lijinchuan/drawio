@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Service.Impl
 {
+    [Obsolete]
     public class SaveDrawFileService : ISaveDrawFileService
     {
         private readonly IDrawFileDao _drawFileDao;

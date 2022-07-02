@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using AutoMapper.Configuration;
 using Drawio.Net.Utils;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +14,14 @@ namespace Drawio.Net.Modules
     /// </summary>
     public class CustomAutofacModule : Module
     {
+        private Microsoft.Extensions.Configuration.IConfiguration _configuration;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="builder"></param>
-        public CustomAutofacModule(ContainerBuilder builder)
+        public CustomAutofacModule(ContainerBuilder builder, Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
-
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -31,6 +34,10 @@ namespace Drawio.Net.Modules
             accessImpleAndInterfaces.AddRange(AssemblyHelper.GetImpleAndInterfaces("Drawio.Net.Service", "Service"));
             foreach (var v in accessImpleAndInterfaces)
             {
+                if (v.impl.CustomAttributes.Any(p => p.AttributeType == typeof(ObsoleteAttribute)))
+                {
+                    continue;
+                }
                 if (v.interfaces.Length == 0)
                 {
                     continue;
@@ -44,6 +51,8 @@ namespace Drawio.Net.Modules
                     builder.RegisterType(v.impl).As(v.interfaces[0]).InstancePerLifetimeScope();
                 }
             }
+
+            builder.RegisterInstance<IMongoClient>(new MongoClient(_configuration["MongoDB"]));
 
             //builder.RegisterGeneric(typeof(TopucHunterRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();//注册仓储泛型                                                                                             //builder.RegisterGeneric(typeof(MyRepositoryBase<，>)).As(typeof(IMyRepository<，>)).InstancePerDependency();//注册仓储泛型 2个以上的泛型参数
             //  builder.RegisterType<myAssembly>().As<ImyAssembly>();   //普通依赖注入

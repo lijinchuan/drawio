@@ -78,7 +78,7 @@ namespace Drawio.Net
         public void ConfigureContainer(ContainerBuilder builder)
         {
             // 直接用Autofac注册我们自定义的 
-            builder.RegisterModule(new CustomAutofacModule(builder));
+            builder.RegisterModule(new CustomAutofacModule(builder, Configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

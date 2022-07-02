@@ -151,7 +151,7 @@
             
             </summary>
         </member>
-        <member name="M:Drawio.Net.Modules.CustomAutofacModule.#ctor(Autofac.ContainerBuilder)">
+        <member name="M:Drawio.Net.Modules.CustomAutofacModule.#ctor(Autofac.ContainerBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             
             </summary>

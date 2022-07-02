@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Drawio.Net.Domain.Entity;
+using Drawio.Net.Domain.Model;
 using Drawio.Net.Utils;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,9 @@ namespace Drawio.Net.Service
                     }
                 }
             }
+
+            CreateMap<MongoDrawFileEntity, DrawFileModel>().ForMember(m=>m.Id,
+                s=>s.MapFrom(e=>e.Fid)).ReverseMap();
 
         }
     }
