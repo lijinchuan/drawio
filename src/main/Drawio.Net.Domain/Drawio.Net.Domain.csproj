@@ -71,6 +71,7 @@
     <Compile Include="Contract\UserSignInReq.cs" />
     <Compile Include="Contract\UserSignInResp.cs" />
     <Compile Include="Entity\DrawFileEntity.cs" />
+    <Compile Include="Entity\MongoDrawFileDelEntity.cs" />
     <Compile Include="Entity\MongoDrawFileEntity.cs" />
     <Compile Include="Entity\MongoAutoId.cs" />
     <Compile Include="Model\DrawFileModel.cs" />

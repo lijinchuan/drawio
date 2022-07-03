@@ -60,6 +60,11 @@ namespace Drawio.Net.Service.Impl
                 };
             }
 
+            var delCollection= _mongoClient.GetDatabase(MongoDrawFileDelEntity.DBName)
+                .GetCollection<MongoDrawFileDelEntity>(MongoDrawFileDelEntity.CollectionName);
+
+            delCollection.InsertOne(_mapper.Map<MongoDrawFileDelEntity>(entity));
+
             var delResult = collection.DeleteOne(p => p.Fid == entity.Fid);
 
             return new OpResult<bool>
