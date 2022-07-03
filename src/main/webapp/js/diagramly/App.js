@@ -7957,13 +7957,29 @@ Editor.prototype.resetGraph = function()
 
 function registerLoginBox() {
 	mxscript(App.TRELLO_JQUERY_URL, function () {
+
+		$.get("/api/UserAuthentication/GetUser", function (data) {
+			if (data.userName) {
+				// Must load this after the dropbox SDK since they use the same namespace
+				var loginLink = $('<span>hi,' + data.userName + ' <a href="/api/UserAuthentication/UserSignOut">' + mxResources.get('exit') + '</a></span>');
+				loginLink.css('position', 'absolute');
+				loginLink.css('top', '2px');
+				loginLink.css('right', '50px');
+				loginLink.css('margin-top', '2px');
+				loginLink.css('z-index', '99');
+				loginLink.css('text-decoration', 'none');
+				loginLink.css('color', '#999');
+				$("body").append(loginLink);
+			} else {
 		// Must load this after the dropbox SDK since they use the same namespace
 		var loginLink = $('<a href="##" class="collect-btn collect-no">' + mxResources.get('helloLogin') + '</a>');
 		loginLink.css('position', 'absolute');
 		loginLink.css('top', '2px');
-		loginLink.css('left', '200px');
+		loginLink.css('right', '50px');
 		loginLink.css('margin-top', '2px');
 		loginLink.css('z-index', '99');
+		loginLink.css('text-decoration', 'none');
+		loginLink.css('color', '#999');
 		$("body").append(loginLink);
 		mxscript(App.UM_SCRIPT_URL, function () {
 
@@ -8022,6 +8038,8 @@ function registerLoginBox() {
 			</form>\
 		</div>\
 	</div>');
+		});
+			}
 		});
 	});
 };

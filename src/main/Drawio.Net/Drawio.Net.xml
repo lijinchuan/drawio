@@ -120,7 +120,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Drawio.Net.API.UserAuthenticationController.UserSignOutAsync">
+        <member name="M:Drawio.Net.API.UserAuthenticationController.UserSignOutAsync(System.String)">
             <summary>
             注销
             </summary>

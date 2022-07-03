@@ -219,35 +219,28 @@ namespace Drawio.Net.API
         /// <returns></returns>
         //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult GetUser()
         {
-            //
-            if (HttpContext.User.Identity != null)
+
+            if (HttpContext.User.Identity.IsAuthenticated)  //判断用户是否通过认证
             {
-                if (HttpContext.User.Identity.IsAuthenticated)  //判断用户是否通过认证
+                var userInfo = GetUserInfo();
+                return Ok(new
                 {
-                    var userInfo = GetUserInfo();
-                    return Ok(new
-                    {
-                        code = 200,
-                        message = $"当前用户是userId:{userInfo.userId},userName:{userInfo.userName},Name:{HttpContext.User.Identity.Name}"
-                    }) ;
-                }
-                else
-                {
-                    return Ok(new
-                    {
-                        code = 400,
-                        message = "未登录"
-                    });
-                }
+                    code = 200,
+                    userInfo.userId,
+                    userInfo.userName
+                });
             }
-            return Ok(new
+            else
             {
-                code = 400,
-                message = "无权访问"
-            });
+                return Ok(new
+                {
+                    code = 400,
+                    message = "未登录"
+                });
+            }
         }
 
         /// <summary>
@@ -255,17 +248,18 @@ namespace Drawio.Net.API
         /// </summary>
         /// <param name="returnUrl"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> UserSignOutAsync()
+        public async Task<IActionResult> UserSignOutAsync(string returnUrl)
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok(new
+
+            if (!string.IsNullOrWhiteSpace(returnUrl))
             {
-                code = 200,
-                message = "注销成功"
-            });
+                return Redirect(returnUrl);
+            }
+            return Redirect(HttpContext.Request.Headers["Referer"]);
         }
 
         /// <summary>
@@ -297,6 +291,7 @@ namespace Drawio.Net.API
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Process([FromServices]IAccountService accountService,
             [FromServices]IVCodeService vCodeService, [FromForm][FromQuery] string action,
             [FromForm][FromQuery] string username, [FromForm][FromQuery] string password,
