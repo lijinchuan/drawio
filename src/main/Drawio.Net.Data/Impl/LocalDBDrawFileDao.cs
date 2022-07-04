@@ -56,6 +56,7 @@ namespace Drawio.Net.Data.Impl
                 Title = title,
                 UserId = userId,
                 Content = content,
+                FileSize=content.Length,
                 CrateTime=DateTime.Now,
                 UpdateTime=DateTime.Now,
                 IsValid=true
@@ -102,6 +103,7 @@ namespace Drawio.Net.Data.Impl
             }
             entity.Title = title;
             entity.Content = content;
+            entity.FileSize = content.Length;
             entity.UpdateTime = DateTime.Now;
             BigEntityTableEngine.LocalEngine.Update(nameof(DrawFileEntity), entity);
 

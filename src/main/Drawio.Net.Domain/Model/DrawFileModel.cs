@@ -31,6 +31,11 @@ namespace Drawio.Net.Domain.Model
             get;
             set;
         }
+        public int FileSize
+        {
+            get;
+            set;
+        }
 
         public bool IsValid
         {

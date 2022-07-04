@@ -354,7 +354,7 @@ ServerFile.listFiles = function (ui, type, success, error) {
         for (var i = 0; i < data.length; i++) {
             files.push({
                 title: data[i].title,
-                size: data[i].content.length,
+                size: data[i].fileSize,
                 type: 'F',
                 hashKey: 'V',
                 lastModified: new Date(data[i].updateTime).getTime()

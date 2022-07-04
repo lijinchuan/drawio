@@ -7999,7 +7999,7 @@ function registerLoginBox() {
 				</p>\
 							<p class="safe">\
 								<label class="remembermetext" for="rememberme"><input name="rememberme" type="checkbox" checked="checked" id="rememberme" class="rememberme" value="forever">'+ mxResources.get('rememberMyLogin') + '</label>\
-									<a class="lost" href="handler.ashx?action=lostpassword">'+ mxResources.get('forgotMyPassword') + '</a>\
+									<a class="lost" href="/api/UserAuthentication/Process?action=lostpassword">'+ mxResources.get('forgotMyPassword') + '</a>\
 				</p>\
 								<p>\
 									<input class="submit" type="submit" value="' + mxResources.get('loginIn') + '" name="submit">\

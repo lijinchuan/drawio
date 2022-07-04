@@ -74,6 +74,7 @@
     <Compile Include="Entity\MongoDrawFileDelEntity.cs" />
     <Compile Include="Entity\MongoDrawFileEntity.cs" />
     <Compile Include="Entity\MongoAutoId.cs" />
+    <Compile Include="Model\DrawFileInfoModel.cs" />
     <Compile Include="Model\DrawFileModel.cs" />
     <Compile Include="Model\OpResult.cs" />
     <Compile Include="Model\UserInfoToken.cs" />

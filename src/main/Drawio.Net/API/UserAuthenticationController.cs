@@ -308,6 +308,10 @@ namespace Drawio.Net.API
                         
                         return Register(accountService, vCodeService,um_captcha, username, password, email);
                     }
+                case "lostpassword":
+                    {
+                        break;
+                    }
             }
 
             return Ok();

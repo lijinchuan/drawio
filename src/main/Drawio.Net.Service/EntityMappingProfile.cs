@@ -38,6 +38,9 @@ namespace Drawio.Net.Service
 
             CreateMap<MongoDrawFileEntity, MongoDrawFileDelEntity>().AfterMap((p, q) => q.DelTime = DateTime.Now);
 
+            CreateMap<MongoDrawFileEntity, DrawFileInfoModel>().ForMember(m => m.Id,
+               s => s.MapFrom(e => e.Fid));
+
         }
     }
 }

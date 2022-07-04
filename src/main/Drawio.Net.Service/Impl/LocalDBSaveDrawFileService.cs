@@ -178,21 +178,21 @@ namespace Drawio.Net.Service.Impl
             }
         }
 
-        public OpResult<List<DrawFileModel>> ListFiles(string userId)
+        public OpResult<List<DrawFileInfoModel>> ListFiles(string userId)
         {
             try
             {
                 var files = _drawFileDao.ListFiles(userId);
-                return new OpResult<List<DrawFileModel>>
+                return new OpResult<List<DrawFileInfoModel>>
                 {
-                    Data = _mapper.Map<List<DrawFileModel>>(files),
+                    Data = _mapper.Map<List<DrawFileInfoModel>>(files),
                     Success = true,
                     Msg = "成功"
                 };
             }
             catch(Exception ex)
             {
-                return new OpResult<List<DrawFileModel>>
+                return new OpResult<List<DrawFileInfoModel>>
                 {
                     Data = null,
                     Success = true,

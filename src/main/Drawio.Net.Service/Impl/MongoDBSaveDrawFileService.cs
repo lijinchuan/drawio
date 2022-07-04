@@ -145,14 +145,14 @@ namespace Drawio.Net.Service.Impl
             };
         }
 
-        public OpResult<List<DrawFileModel>> ListFiles(string userId)
+        public OpResult<List<DrawFileInfoModel>> ListFiles(string userId)
         {
             var collection = _mongoClient.GetDatabase(MongoDrawFileEntity.DBName)
            .GetCollection<MongoDrawFileEntity>(MongoDrawFileEntity.CollectionName);
             var files = collection.Find(p=>p.UserId==userId).ToList();
-            return new OpResult<List<DrawFileModel>>
+            return new OpResult<List<DrawFileInfoModel>>
             {
-                Data = _mapper.Map<List<DrawFileModel>>(files),
+                Data = _mapper.Map<List<DrawFileInfoModel>>(files),
                 Success = true,
                 Msg = "成功"
             };
@@ -206,7 +206,7 @@ namespace Drawio.Net.Service.Impl
             }
             if (content != file.Content)
             {
-                update = update.Set(p => p.Content, content);
+                update = update.Set(p => p.Content, content).Set(p=>p.FileSize,content.Length);
             }
             
             var ret = collection.UpdateOne(filter, update);

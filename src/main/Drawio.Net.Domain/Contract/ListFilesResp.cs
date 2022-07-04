@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Domain.Contract
 {
-    public class ListFilesResp:BaseResp<List<DrawFileModel>>
+    public class ListFilesResp:BaseResp<List<DrawFileInfoModel>>
     {
     }
 }
