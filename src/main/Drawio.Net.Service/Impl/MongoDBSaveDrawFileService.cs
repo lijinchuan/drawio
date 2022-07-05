@@ -171,7 +171,7 @@ namespace Drawio.Net.Service.Impl
             if (file.Title != newTitle)
             {
                 var ret = collection.UpdateOne(new FilterDefinitionBuilder<MongoDrawFileEntity>().Eq(p => p.Fid, fileId),
-                    new UpdateDefinitionBuilder<MongoDrawFileEntity>().Set(p => p.Title, newTitle));
+                    new UpdateDefinitionBuilder<MongoDrawFileEntity>().Set(p => p.Title, newTitle).Set(p => p.UpdateTime, DateTime.Now));
 
                 boo = ret.ModifiedCount == 1;
             }
@@ -202,11 +202,11 @@ namespace Drawio.Net.Service.Impl
             UpdateDefinition<MongoDrawFileEntity> update = updateBuilder.Combine();
             if (title != file.Title)
             {
-                update = update.Set(p => p.Title, title);
+                update = update.Set(p => p.Title, title).Set(p => p.UpdateTime, DateTime.Now);
             }
             if (content != file.Content)
             {
-                update = update.Set(p => p.Content, content).Set(p=>p.FileSize,content.Length);
+                update = update.Set(p => p.Content, content).Set(p => p.UpdateTime, DateTime.Now).Set(p => p.FileSize, content.Length);
             }
             
             var ret = collection.UpdateOne(filter, update);
