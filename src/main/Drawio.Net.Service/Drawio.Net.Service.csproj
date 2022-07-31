@@ -106,6 +106,7 @@
     <Compile Include="Impl\AccountService.cs" />
     <Compile Include="Impl\LocalDBSaveDrawFileService.cs" />
     <Compile Include="Impl\MongoDBSaveDrawFileService.cs" />
+    <Compile Include="Impl\RemoteSaveDrawFileService.cs" />
     <Compile Include="Impl\VCodeService.cs" />
     <Compile Include="ISaveDrawFileService.cs" />
     <Compile Include="IVCodeService.cs" />

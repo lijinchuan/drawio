@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Domain.Contract
 {
-    public class RenameFileReq : BaseReq
+    public class BaseReq
     {
-        public long FileId
+        public string UserId
         {
             get;
             set;
         }
-        public string NewTitle
+
+        public string OpId
         {
             get;
             set;

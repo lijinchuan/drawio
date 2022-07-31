@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\BaseReq.cs" />
     <Compile Include="Contract\BaseResp.cs" />
+    <Compile Include="Contract\Consts.cs" />
     <Compile Include="Contract\DeleteFileReq.cs" />
     <Compile Include="Contract\DeleteFileResp.cs" />
     <Compile Include="Contract\FindByTitleReq.cs" />

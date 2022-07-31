@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Domain.Contract
 {
-    public class SaveFileReq
+    public class SaveFileReq : BaseReq
     {
         public long FileId
         {

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Service.Impl
 {
+    [Obsolete]
     public class MongoDBSaveDrawFileService : ISaveDrawFileService
     {
         private IMongoClient _mongoClient;

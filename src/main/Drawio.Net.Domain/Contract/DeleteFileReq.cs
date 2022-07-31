@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Domain.Contract
 {
-    public class DeleteFileReq
+    public class DeleteFileReq: BaseReq
     {
         public long FileId
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Drawio.Net.Domain.Contract
 {
-    public class FindByTitleReq
+    public class FindByTitleReq: BaseReq
     {
         public string Title
         {

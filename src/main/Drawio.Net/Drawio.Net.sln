@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.Data", "..\Drawi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.Utils", "..\Drawio.Net.Utils\Drawio.Net.Utils.csproj", "{9D778787-831A-4C06-B575-905F92F6E760}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drawio.Net.BackGroundService", "..\Drawio.Net.BackGroundService\Drawio.Net.BackGroundService.csproj", "{D77E68C0-C69B-4E37-81E9-CD8DE05FB1F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{9D778787-831A-4C06-B575-905F92F6E760}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D778787-831A-4C06-B575-905F92F6E760}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D778787-831A-4C06-B575-905F92F6E760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77E68C0-C69B-4E37-81E9-CD8DE05FB1F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77E68C0-C69B-4E37-81E9-CD8DE05FB1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77E68C0-C69B-4E37-81E9-CD8DE05FB1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77E68C0-C69B-4E37-81E9-CD8DE05FB1F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

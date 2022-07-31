@@ -26,7 +26,7 @@ namespace Drawio.Net.Utils
                 Assembly assembly = Assembly.Load(assemblyName);
                 List<Type> types = assembly
                     .GetTypes()
-                    .Where(x => !x.IsInterface && x.Name.Contains(nameSearch))
+                    .Where(x => !x.IsInterface && x.Name.Contains(nameSearch)&& !x.CustomAttributes.Any(p => p.AttributeType == typeof(ObsoleteAttribute)))
                     .ToList();
 
                 foreach (var item in types)
