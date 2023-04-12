@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,18 +55,21 @@ namespace Drawio.Net.Domain.Entity
             set;
         }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CrateTime
         {
             get;
             set;
         }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime UpdateTime
         {
             get;
             set;
         }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime DelTime
         {
             get;
