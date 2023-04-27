@@ -24,7 +24,7 @@ namespace Drawio.Net.Service.Impl
         public OpResult<bool> DeleteFile(string opId, string userId, string title)
         {
             return ESBClient.DoSOARequest2<OpResult<bool>>(Domain.Contract.Consts.SNo,
-                Domain.Contract.Consts.FunId_DeleteFile, new DeleteFileReq
+                Domain.Contract.Consts.FunId_DeleteFileByTitle, new DeleteFileReq
                 {
                     OpId = opId,
                     Title = title,
