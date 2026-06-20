@@ -1,4 +1,4 @@
-﻿using Drawio.Net.Domain.Contract;
+using Drawio.Net.Domain.Contract;
 using Drawio.Net.Domain.Model;
 using LJC.NetCoreFrameWork.SOA;
 using System;
@@ -64,12 +64,15 @@ namespace Drawio.Net.Service.Impl
                 });
         }
 
-        public OpResult<List<DrawFileInfoModel>> ListFiles(string userId)
+       public OpPageResult<List<DrawFileInfoModel>> ListFiles(string userId, string search, int page, int pageSize)
         {
-            return ESBClient.DoSOARequest2<OpResult<List<DrawFileInfoModel>>>(Domain.Contract.Consts.SNo,
+            return ESBClient.DoSOARequest2<OpPageResult<List<DrawFileInfoModel>>>(Domain.Contract.Consts.SNo,
                 Domain.Contract.Consts.FunId_ListFiles, new ListFilesReq
                 {
-                    UserId = userId
+                    UserId = userId,
+                    Search = search,
+                    Page  = page,
+                    PageSize = pageSize
                 });
         }
 

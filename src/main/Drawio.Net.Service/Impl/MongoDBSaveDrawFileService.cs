@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Drawio.Net.Domain.Contract;
 using Drawio.Net.Domain.Entity;
 using Drawio.Net.Domain.Model;
@@ -146,16 +146,30 @@ namespace Drawio.Net.Service.Impl
             };
         }
 
-        public OpResult<List<DrawFileInfoModel>> ListFiles(string userId)
+       public OpPageResult<List<DrawFileInfoModel>> ListFiles(string userId, string search, int page, int pageSize)
         {
             var collection = _mongoClient.GetDatabase(MongoDrawFileEntity.DBName)
            .GetCollection<MongoDrawFileEntity>(MongoDrawFileEntity.CollectionName);
-            var files = collection.Find(p=>p.UserId==userId).ToList();
-            return new OpResult<List<DrawFileInfoModel>>
+           // 搜索过滤
+           var filterBuilder = new FilterDefinitionBuilder<MongoDrawFileEntity>();
+           var filter = filterBuilder.Eq(p => p.UserId, userId);
+           if (!string.IsNullOrEmpty(search))
+           {
+               filter = filterBuilder.And(filter, filterBuilder.Regex(p => p.Title,
+                   new MongoDB.Bson.BsonRegularExpression(search, "i")));
+           }
+           var filesQuery = collection.Find(filter);
+           var totalCount = (int)filesQuery.CountDocuments();
+           var files = filesQuery.SortByDescending(p => p.UpdateTime)
+               .Skip((page - 1) * pageSize).Limit(pageSize).ToList();
+            return new OpPageResult<List<DrawFileInfoModel>>
             {
                 Data = _mapper.Map<List<DrawFileInfoModel>>(files),
                 Success = true,
-                Msg = "成功"
+                Msg = "成功",
+                TotalCount = totalCount,
+                PageIndex = page,
+                PageSize = pageSize
             };
         }
 

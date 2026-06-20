@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.11912.234 insiders
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drawio.Net", "Drawio.Net.csproj", "{F243E4C2-142D-4869-9001-D471FF91A6F6}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "webapp", "..\webapp\", "{1D090647-03D5-4227-AA15-3D45D36DD9AA}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_6587"
 		Debug.AspNetCompiler.PhysicalPath = "..\webapp\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6587\"

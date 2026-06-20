@@ -349,19 +349,50 @@ ServerFile.prototype.destroy = function () {
  */
 ServerFile.listFiles = function (ui, type, success, error) {
 
-    ServerFile.PostApi('/api/Drawio/ListFiles', '', function (data) {
-        var files = [];
-        for (var i = 0; i < data.length; i++) {
-            files.push({
-                title: data[i].title,
-                size: data[i].fileSize,
-                type: 'F',
-                hashKey: 'V',
-                lastModified: new Date(data[i].updateTime).getTime()
-            });
-        }
-        success(files);
-    }, error);
+   // 支持新签名: (ui, type, search, page, pageSize, success, error)
+   var search = '', page = 1, pageSize = 20;
+   if (arguments.length > 3 && typeof arguments[2] !== 'function') {
+       search = arguments[2] || '';
+       page = arguments[3] || 1;
+       pageSize = arguments[4] || 20;
+       success = arguments[5];
+       error = arguments[6];
+   }
+
+   var formData = 'Search=' + encodeURIComponent(search) +
+       '&Page=' + page + '&PageSize=' + pageSize;
+
+   // 直接用 mxUtils.post 以获取完整响应（含分页信息）
+   mxUtils.post('/api/Drawio/ListFiles', formData, function (req) {
+       if (req.getStatus() >= 200 && req.getStatus() < 300) {
+           var ret = JSON.parse(req.getText());
+           if (ret.code == 200) {
+               var files = [];
+               for (var i = 0; i < ret.data.length; i++) {
+                   files.push({
+                       title: ret.data[i].title,
+                       size: ret.data[i].fileSize,
+                       type: 'F',
+                       hashKey: 'V',
+                       lastModified: new Date(ret.data[i].updateTime).getTime()
+                   });
+               }
+               // 将分页信息附加到 files 数组上
+               files.totalCount = ret.totalCount || 0;
+               files.page = ret.page || page;
+               files.pageSize = ret.pageSize || pageSize;
+               success(files);
+           } else if (error != null) {
+               error(ret.msg);
+           }
+       } else if (error != null) {
+           error();
+       }
+   }, function (req) {
+       if (error != null) {
+           error();
+       }
+   });
 };
 
 /**

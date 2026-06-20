@@ -13,7 +13,8 @@ namespace Drawio.Net.Data
 
         bool RenameFile(long fileId, string newTitle);
 
-        List<DrawFileEntity> ListFiles(string userId);
+        /// <summary>获取用户的文件列表（支持搜索、分页、按修改时间倒序）</summary>
+        List<DrawFileEntity> ListFiles(string userId, string search, int page, int pageSize, out int totalCount);
 
         DrawFileEntity GetFileInfo(long fileId);
 

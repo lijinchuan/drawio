@@ -15,7 +15,7 @@ namespace Drawio.Net.Service
 
         OpResult<bool> RenameFile(string opId, long fileId, string newTitle);
 
-        OpResult<List<DrawFileInfoModel>> ListFiles(string userId);
+        OpPageResult<List<DrawFileInfoModel>> ListFiles(string userId, string search, int page, int pageSize);
 
         OpResult<DrawFileModel> GetFileInfo(string opId, long fileId);
 

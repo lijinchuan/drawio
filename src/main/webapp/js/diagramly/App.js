@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2006-2020, JGraph Ltd
  * Copyright (c) 2006-2020, draw.io AG
  */
@@ -3979,7 +3979,13 @@ App.prototype.pickFile = function(mode)
 				window.openKey = 'open';
 
 				window.listBrowserFiles = mxUtils.bind(this, function (success, error) {
-					ServerFile.listFiles(this, 'F', success, error);
+					// 支持新签名 (search, page, pageSize, success, error)
+					var args = arguments;
+					if (args.length > 1 && typeof args[0] !== 'function') {
+						ServerFile.listFiles(this, 'F', args[0], args[1], args[2], args[3], args[4]);
+					} else {
+						ServerFile.listFiles(this, 'F', success, error);
+					}
 				});
 
 				window.openBrowserFile = mxUtils.bind(this, function (title, success, error) {

@@ -11,6 +11,7 @@ namespace Drawio.Net.Domain.Entity
         public const string INDEXUSERID = nameof(UserId);
         public const string INDEXUSERIDTITLE = nameof(UserId) + nameof(Title);
         public const string INDEXUSERIDCREATIME = nameof(UserId) + nameof(CrateTime);
+        public const string INDEXUSERIDUPDATETIME = nameof(UserId) + nameof(UpdateTime);
 
         public long Id
         {

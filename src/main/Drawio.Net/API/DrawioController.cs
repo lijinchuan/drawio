@@ -116,20 +116,25 @@ namespace Drawio.Net.API
         }
 
         /// <summary>
-        /// 
+        /// 列出用户的文件（支持搜索、分页、按修改时间倒序）
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
         [HttpPost]
         public ListFilesResp ListFiles([FromForm] ListFilesReq req)
         {
-            var ret = _saveDrawFileService.ListFiles(GetUserInfo().userId);
+            var page = req.Page > 0 ? req.Page : 1;
+            var pageSize = req.PageSize > 0 ? req.PageSize : 20;
+            var ret = _saveDrawFileService.ListFiles(GetUserInfo().userId, req.Search, page, pageSize);
 
             return new ListFilesResp
             {
                 Code = 200,
                 Data = ret.Data,
-                Msg = ret.Msg
+                Msg = ret.Msg,
+                TotalCount = ret.TotalCount,
+                Page = ret.PageIndex,
+                PageSize = ret.PageSize
             };
         }
 

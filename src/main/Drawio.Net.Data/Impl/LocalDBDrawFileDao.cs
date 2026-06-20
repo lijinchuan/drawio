@@ -1,4 +1,4 @@
-﻿using Drawio.Net.Domain.Entity;
+using Drawio.Net.Domain.Entity;
 using Drawio.Net.Domain.Model;
 using LJC.FrameWorkV3.Data.EntityDataBase;
 using System;
@@ -17,7 +17,8 @@ namespace Drawio.Net.Data.Impl
             {
                 b.AddIndex(DrawFileEntity.INDEXUSERID, i => i.Asc(j => j.UserId))
                 .AddIndex(DrawFileEntity.INDEXUSERIDTITLE, i => i.Asc(j => j.UserId).Asc(j => j.Title))
-                .AddIndex(DrawFileEntity.INDEXUSERIDCREATIME, i => i.Asc(j => j.UserId).Desc(j => j.CrateTime));
+                .AddIndex(DrawFileEntity.INDEXUSERIDCREATIME, i => i.Asc(j => j.UserId).Desc(j => j.CrateTime))
+                .AddIndex(DrawFileEntity.INDEXUSERIDUPDATETIME, i => i.Asc(j => j.UserId).Desc(j => j.UpdateTime));
             });
         }
 
@@ -66,12 +67,29 @@ namespace Drawio.Net.Data.Impl
             return entity.Id;
         }
 
-        public List<DrawFileEntity> ListFiles(string userId)
+        public List<DrawFileEntity> ListFiles(string userId, string search, int page, int pageSize, out int totalCount)
         {
-            var entities = BigEntityTableEngine.LocalEngine.Find<DrawFileEntity>(nameof(DrawFileEntity), DrawFileEntity.INDEXUSERID, new object[] { userId });
+            // 1. 使用索引按 UserId 查询该用户全部文件
+            var entities = BigEntityTableEngine.LocalEngine
+                .Find<DrawFileEntity>(nameof(DrawFileEntity), DrawFileEntity.INDEXUSERID, new object[] { userId });
 
-            return entities.ToList();
+           // 2. 按 UpdateTime 降序排序（最新修改的在前）
+           var orderedQuery = entities.OrderByDescending(e => e.UpdateTime);
+           IEnumerable<DrawFileEntity> query = orderedQuery;
 
+            // 3. 如果 search 非空，按标题模糊匹配（不区分大小写）
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(e => e.Title != null
+                    && e.Title.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            // 4. 计算符合条件的总记录数
+            var list = query.ToList();
+            totalCount = list.Count;
+
+            // 5. 分页截取
+            return list.Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public bool RenameFile(long fileId, string newTitle)

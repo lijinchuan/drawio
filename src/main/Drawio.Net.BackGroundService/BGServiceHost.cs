@@ -52,7 +52,7 @@ namespace Drawio.Net.BackGroundService
                 case Consts.FunId_ListFiles:
                     {
                         var req = LJC.FrameWork.EntityBuf.EntityBufCore.DeSerialize<ListFilesReq>(Param);
-                        return AutofacBuilder.GetFromFac<ISaveDrawFileService>().ListFiles(req.UserId);
+                        return AutofacBuilder.GetFromFac<ISaveDrawFileService>().ListFiles(req.UserId, req.Search, req.Page, req.PageSize);
                     }
                 case Consts.FunId_RenameFile:
                     {

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Drawio.Net.Data;
 using Drawio.Net.Domain.Entity;
 using Drawio.Net.Domain.Model;
@@ -178,24 +178,27 @@ namespace Drawio.Net.Service.Impl
             }
         }
 
-        public OpResult<List<DrawFileInfoModel>> ListFiles(string userId)
+       public OpPageResult<List<DrawFileInfoModel>> ListFiles(string userId, string search, int page, int pageSize)
         {
             try
             {
-                var files = _drawFileDao.ListFiles(userId);
-                return new OpResult<List<DrawFileInfoModel>>
+                var files = _drawFileDao.ListFiles(userId, search, page, pageSize, out int totalCount);
+                return new OpPageResult<List<DrawFileInfoModel>>
                 {
                     Data = _mapper.Map<List<DrawFileInfoModel>>(files),
                     Success = true,
-                    Msg = "成功"
+                    Msg = "成功",
+                    TotalCount = totalCount,
+                    PageIndex = page,
+                    PageSize = pageSize
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return new OpResult<List<DrawFileInfoModel>>
+                return new OpPageResult<List<DrawFileInfoModel>>
                 {
                     Data = null,
-                    Success = true,
+                    Success = false,
                     Msg = ex.Message
                 };
             }
